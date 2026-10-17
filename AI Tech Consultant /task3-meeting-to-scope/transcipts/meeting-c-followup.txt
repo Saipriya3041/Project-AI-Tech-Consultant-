@@ -1,0 +1,9 @@
+SYNTHETIC DEVELOPMENT SCENARIO - follow-up to Meeting A; not a recorded client role-play.
+Meeting C: Search scope changes
+
+Consultant: We are reviewing the approved search and mobile scope. What changed?
+Client: Keep the category filters, but add a stock-availability filter.
+Client: We no longer need the mobile layout redesign; use the existing responsive page.
+Client: Change the target delivery date to January 20 because product data will arrive later.
+Client: We also want search suggestions as the customer types. That was not in the approved scope.
+Consultant: We will show additions, removals, and schedule changes against the approved baseline. The new suggestion feature needs a separate estimate and approval.

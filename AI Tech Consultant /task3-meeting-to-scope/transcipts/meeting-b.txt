@@ -1,0 +1,11 @@
+SYNTHETIC DEVELOPMENT SCENARIO - not a recorded client role-play.
+Meeting B: E-commerce checkout
+
+Consultant: Which checkout problem should we address?
+Client: We need to simplify the checkout flow for returning customers.
+Consultant: Are there external systems involved?
+Client: We want an integration with our payment provider and order notifications by email.
+Consultant: Does the provider support the required API?
+Client: We are not sure. Please confirm provider access and sandbox credentials.
+Consultant: Any acceptance criteria?
+Client: We need a successful test purchase and a confirmation email in staging before launch.
