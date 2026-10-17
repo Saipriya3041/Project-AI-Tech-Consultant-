@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620" role="img" aria-labelledby="title description">
+  <title id="title">AI Tech Consultant architecture</title>
+  <desc id="description">A browser workbench connects to three services. Inbox Agent and Meeting to Scope both query the shared Knowledge Brain API. Each service has persistent storage.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#526579" />
+    </marker>
+    <style>
+      .title { font: 700 27px Arial, sans-serif; fill: #142334; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #526579; }
+      .label { font: 700 18px Arial, sans-serif; fill: #142334; }
+      .detail { font: 14px Arial, sans-serif; fill: #405468; }
+      .small { font: 12px Arial, sans-serif; fill: #526579; }
+      .node { stroke-width: 2; rx: 12; }
+      .edge { fill: none; stroke: #526579; stroke-width: 2.5; marker-end: url(#arrow); }
+      .edge-label { font: 12px Arial, sans-serif; fill: #526579; }
+    </style>
+  </defs>
+  <rect width="1000" height="620" fill="#f5f8fb" />
+  <text x="40" y="48" class="title">AI Tech Consultant</text>
+  <text x="40" y="74" class="subtitle">Three connected workflows. One shared product knowledge service.</text>
+
+  <path class="edge" d="M500 150 L500 205" />
+  <path class="edge" d="M420 150 C350 190 205 205 170 270" />
+  <path class="edge" d="M580 150 C650 190 795 205 830 270" />
+  <path class="edge" d="M295 350 C355 350 400 330 435 320" />
+  <path class="edge" d="M705 350 C645 350 600 330 565 320" />
+  <path class="edge" d="M500 370 L500 435" />
+  <text x="334" y="187" class="edge-label">question</text>
+  <text x="648" y="187" class="edge-label">transcript</text>
+  <text x="335" y="337" class="edge-label">knowledge query</text>
+  <text x="622" y="337" class="edge-label">feasibility query</text>
+  <text x="510" y="410" class="edge-label">SQLite</text>
+
+  <rect x="390" y="85" width="220" height="65" class="node" fill="#ffffff" stroke="#7890a8" />
+  <text x="500" y="114" text-anchor="middle" class="label">Browser Workbench</text>
+  <text x="500" y="136" text-anchor="middle" class="detail">Knowledge | Inbox | Scope</text>
+
+  <rect x="370" y="205" width="260" height="165" class="node" fill="#e3f3ea" stroke="#43866a" />
+  <text x="500" y="238" text-anchor="middle" class="label">Knowledge Brain</text>
+  <text x="500" y="262" text-anchor="middle" class="detail">Python API · citations · escalation</text>
+  <text x="500" y="290" text-anchor="middle" class="small">Polite crawl · article chunks · retrieval</text>
+  <text x="500" y="313" text-anchor="middle" class="small">Grounded answer or human review</text>
+  <text x="500" y="343" text-anchor="middle" class="small">Shared product evidence</text>
+
+  <rect x="45" y="270" width="250" height="150" class="node" fill="#e9f2fb" stroke="#5c83ad" />
+  <text x="170" y="305" text-anchor="middle" class="label">Inbox Agent</text>
+  <text x="170" y="330" text-anchor="middle" class="detail">TypeScript API</text>
+  <text x="170" y="354" text-anchor="middle" class="small">Classify · retrieve · draft</text>
+  <text x="170" y="376" text-anchor="middle" class="small">Human review · feedback</text>
+  <text x="170" y="402" text-anchor="middle" class="small">Append-only JSONL ledger</text>
+
+  <rect x="705" y="270" width="250" height="150" class="node" fill="#fff1dc" stroke="#bf8950" />
+  <text x="830" y="305" text-anchor="middle" class="label">Meeting to Scope</text>
+  <text x="830" y="330" text-anchor="middle" class="detail">Python API</text>
+  <text x="830" y="354" text-anchor="middle" class="small">Transcript · scope · estimate</text>
+  <text x="830" y="376" text-anchor="middle" class="small">Proposal review · scope diff</text>
+  <text x="830" y="402" text-anchor="middle" class="small">SQLite proposals and baseline</text>
+
+  <rect x="370" y="435" width="260" height="110" class="node" fill="#ffffff" stroke="#7890a8" />
+  <text x="500" y="472" text-anchor="middle" class="label">Knowledge SQLite</text>
+  <text x="500" y="498" text-anchor="middle" class="detail">Articles · chunks · escalations</text>
+  <text x="500" y="522" text-anchor="middle" class="small">Cursor · link checkpoints · optional vectors</text>
+
+  <text x="40" y="590" class="small">Local demo: APIs 8010-8012 · workbench 8081</text>
+</svg>
