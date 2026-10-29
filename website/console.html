@@ -23,6 +23,7 @@
       --radius: 7px;
     }
     * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
     body { margin: 0; min-height: 100vh; background: var(--canvas); color: var(--ink); font: 15px/1.5 "Aptos", "Trebuchet MS", sans-serif; }
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
@@ -62,8 +63,8 @@
     .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 15px; }
     .subtle { color: var(--muted); font-size: 12px; }
     label { display: block; margin-bottom: 7px; color: #d7ded6; font-size: 12px; font-weight: 650; }
-    input, textarea { width: 100%; padding: 11px 12px; color: var(--ink); background: #121815; border: 1px solid var(--line); border-radius: 5px; outline: none; }
-    input:focus, textarea:focus { border-color: var(--mint); box-shadow: 0 0 0 2px #b6f226; }
+    input, textarea, select { width: 100%; padding: 11px 12px; color: var(--ink); background: #121815; border: 1px solid var(--line); border-radius: 5px; outline: none; }
+    input:focus, textarea:focus, select:focus { border-color: var(--mint); box-shadow: 0 0 0 2px #b6f226; }
     textarea { min-height: 120px; resize: vertical; }
     .field { margin-bottom: 15px; }
     .actions { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; }
@@ -103,6 +104,184 @@
     .muted-link { color: var(--muted); font-size: 12px; }
     .error-text { color: var(--coral); }
     .mobile-menu { display: none; }
+    .toolbar-actions { display: flex; align-items: center; gap: 14px; }
+    .profile-button { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: var(--surface); }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
+    .dashboard-stat { padding: 13px; border: 1px solid var(--line); background: var(--surface); }
+    .dashboard-stat strong { display: block; color: var(--mint); font: 500 22px Georgia, serif; }
+    .dashboard-stat span { color: var(--muted); font-size: 11px; }
+    .inline-fields { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px; align-items: end; }
+    .sitemap-list { display: grid; gap: 7px; margin: 10px 0; }
+    .sitemap-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 11px; background: var(--surface); border: 1px solid var(--line); overflow-wrap: anywhere; font-size: 12px; }
+    .sitemap-item button { flex: 0 0 auto; padding: 3px 7px; color: var(--coral); background: transparent; border: 1px solid var(--line); }
+    .folder-nav { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 18px; }
+    .folder-button { padding: 7px 11px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); background: transparent; font-size: 12px; }
+    .folder-button[aria-pressed="true"] { color: var(--ink); border-color: var(--mint); background: var(--surface); }
+    .gmail-message { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .gmail-message-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+    .gmail-message-meta, .gmail-message-body { color: var(--muted); font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .gmail-message-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .gmail-reply { min-height: 100px; margin-top: 10px; }
+    .gmail-settings-dialog { width: min(620px, calc(100% - 32px)); max-height: min(85vh, 780px); overflow: auto; padding: 24px; border: 1px solid var(--line); color: var(--ink); background: var(--surface); }
+    .gmail-settings-dialog::backdrop { background: #070a08cc; }
+    .gmail-category-list { display: grid; gap: 8px; }
+    .gmail-category-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, auto) minmax(120px, auto); align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+    .gmail-category-row label { margin: 0; }
+    .gmail-category-row span { color: var(--muted); font-size: 12px; }
+    .gmail-setup { display: grid; gap: 10px; }
+    .gmail-env-example { margin: 0; padding: 12px; overflow-x: auto; border: 1px solid var(--line); background: var(--canvas); color: var(--ink); font: 12px/1.6 Consolas, monospace; }
+    .gmail-setup a { color: var(--mint); text-decoration: underline; }
+    .content:has(#view-inbox.active) { width: 100%; max-width: 100%; padding: 0; margin: 0; }
+    #view-inbox { padding: 0; margin: 0; }
+    .gmail-app-container { display: flex; flex-direction: column; min-height: 100vh; background: var(--canvas); color: var(--ink); }
+    .gmail-top-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; padding: 0 16px 0 20px; border-bottom: 1px solid var(--line); background: var(--rail); }
+    .gmail-header-left { display: flex; align-items: center; gap: 14px; min-width: 220px; }
+    .gmail-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent; color: var(--muted); cursor: pointer; transition: background .15s; }
+    .gmail-icon-btn:hover { background: var(--surface-raised); color: var(--ink); }
+    .gmail-logo-container { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 500; font-family: "Segoe UI", system-ui, -apple-system, sans-serif; color: #e3e3e3; letter-spacing: -0.2px; }
+    .gmail-header-center { flex: 1 1 720px; max-width: 720px; margin: 0 auto; }
+    .gmail-search-bar { display: flex; align-items: center; gap: 12px; width: 100%; height: 46px; padding: 0 16px; border-radius: 24px; background: var(--surface); border: 1px solid transparent; transition: background .15s, border-color .15s; }
+    .gmail-search-bar:focus-within { background: #16201b; border-color: var(--mint); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    .gmail-search-input { flex: 1; border: 0; background: transparent; color: var(--ink); font-size: 14px; outline: none; }
+    .gmail-header-right { display: flex; align-items: center; gap: 10px; }
+    .gmail-active-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 16px; border: 1px solid #2e4438; background: #16241c; color: #b6f27c; font-size: 12px; font-weight: 500; }
+    .gmail-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #34a853; box-shadow: 0 0 0 2px rgba(52,168,83,0.25); }
+    .gmail-avatar { width: 34px; height: 34px; border-radius: 50%; background: #00796b; color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .gmail-body-layout { display: flex; flex: 1; min-height: calc(100vh - 64px); }
+    .gmail-mini-rail { width: 68px; flex: 0 0 68px; border-right: 1px solid var(--line); background: var(--rail); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 10px; }
+    .gmail-rail-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 56px; height: 52px; border-radius: 16px; border: 0; background: transparent; color: var(--muted); font-size: 11px; cursor: pointer; gap: 4px; transition: background .15s; }
+    .gmail-rail-btn:hover { background: var(--surface-raised); color: var(--ink); }
+    .gmail-rail-btn.active { background: #26382b; color: var(--mint); font-weight: 600; }
+    .gmail-rail-icon { position: relative; display: grid; place-items: center; }
+    .gmail-rail-badge { position: absolute; top: -4px; right: -8px; background: #ea4335; color: white; border-radius: 10px; padding: 1px 5px; font-size: 10px; font-weight: 700; line-height: 1.2; }
+    .gmail-left-sidebar { width: 250px; flex: 0 0 250px; padding: 16px 14px; border-right: 1px solid var(--line); background: var(--rail); display: flex; flex-direction: column; gap: 18px; }
+    .gmail-compose-pill { display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 24px; border-radius: 16px; border: 0; background: #c2e7ff; color: #001d35; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.18); transition: box-shadow .2s, filter .2s; margin-bottom: 6px; }
+    .gmail-compose-pill:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.28); filter: brightness(1.04); }
+    .gmail-nav-folders { display: flex; flex-direction: column; gap: 2px; }
+    .gmail-folder-item { display: flex; align-items: center; gap: 14px; width: 100%; height: 36px; padding: 0 16px; border: 0; border-radius: 18px; background: transparent; color: var(--ink); font-size: 13px; text-align: left; cursor: pointer; transition: background .12s; }
+    .gmail-folder-item:hover { background: var(--surface-raised); }
+    .gmail-folder-item.active { background: #d3e3fd; color: #041e49; font-weight: 600; }
+    .gmail-folder-item.active svg { fill: #041e49; }
+    .gmail-folder-text { flex: 1; }
+    .gmail-folder-count { font-size: 12px; font-weight: 600; color: inherit; }
+    .gmail-labels-section { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .gmail-labels-header { display: flex; align-items: center; justify-content: space-between; padding: 0 8px; color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .gmail-labels-list { display: flex; flex-direction: column; gap: 2px; }
+    .gmail-label-item { display: flex; align-items: center; gap: 12px; height: 32px; padding: 0 12px; border-radius: 16px; cursor: pointer; font-size: 13px; color: var(--muted); transition: background .12s; }
+    .gmail-label-item:hover { background: var(--surface-raised); color: var(--ink); }
+    .gmail-label-item.active { background: #1f3025; color: var(--mint); font-weight: 600; }
+    .label-tag-dot { width: 10px; height: 10px; border-radius: 2px; flex: 0 0 10px; }
+    .dot-blue { background: #4285f4; }
+    .dot-green { background: #34a853; }
+    .dot-yellow { background: #fbbc04; }
+    .dot-red { background: #ea4335; }
+    .dot-purple { background: #af5cf7; }
+    .dot-orange { background: #ff7043; }
+    .dot-cyan { background: #26c6da; }
+    .dot-pink { background: #ec407a; }
+    .dot-brown { background: #8d6e63; }
+    .gmail-account-info-box { margin-top: auto; padding: 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+    .gmail-main-pane { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--canvas); }
+    .gmail-actions-toolbar { display: flex; align-items: center; justify-content: space-between; height: 48px; padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--surface); gap: 12px; }
+    .gmail-actions-left { display: flex; align-items: center; gap: 12px; }
+    .gmail-checkbox-wrap { display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 11px; color: var(--muted); }
+    .gmail-tool-btn { width: 32px; height: 32px; border-radius: 50%; border: 0; background: transparent; color: var(--muted); display: grid; place-items: center; cursor: pointer; font-size: 14px; }
+    .gmail-tool-btn:hover { background: var(--surface-raised); color: var(--ink); }
+    .gmail-status-text { font-size: 12px; color: var(--muted); margin-left: 8px; }
+    .gmail-actions-right { display: flex; align-items: center; gap: 8px; }
+    .gmail-pagination-text { font-size: 12px; color: var(--muted); }
+    .gmail-page-btn { width: 28px; height: 28px; border-radius: 50%; border: 0; background: transparent; color: var(--muted); cursor: pointer; display: grid; place-items: center; font-size: 16px; }
+    .gmail-page-btn:hover { background: var(--surface-raised); color: var(--ink); }
+    .gmail-table-container { flex: 1; overflow-y: auto; }
+    .gmail-message-row { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); background: var(--canvas); transition: background .12s; }
+    .gmail-message-row:hover { background: var(--surface-raised); }
+    .gmail-message-row.unread { font-weight: 600; background: #131b17; }
+    .gmail-row-summary { display: grid; grid-template-columns: 240px minmax(0, 1fr) 200px; align-items: center; min-height: 44px; padding: 0 16px; cursor: pointer; gap: 16px; font-size: 13px; }
+    .gmail-row-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
+    .gmail-row-check { width: 15px; height: 15px; accent-color: var(--mint); cursor: pointer; }
+    .gmail-star-icon { font-size: 16px; color: #586960; cursor: pointer; user-select: none; }
+    .gmail-star-icon.starred { color: #fbbc04; }
+    .gmail-row-sender { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-size: 13px; }
+    .gmail-row-content { display: flex; align-items: baseline; gap: 6px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .gmail-row-subject { color: var(--ink); font-weight: inherit; flex-shrink: 0; }
+    .gmail-row-dash { color: var(--muted); }
+    .gmail-row-snippet { color: var(--muted); overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
+    .gmail-row-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+    .gmail-cat-pill { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; }
+    .cat-filters { background: #1e3a5f; color: #8ab4f8; }
+    .cat-home_page { background: #1b3d2b; color: #81c995; }
+    .cat-domain_management { background: #3d351b; color: #fdd663; }
+    .cat-header { background: #3d1b1b; color: #f28b82; }
+    .cat-main_menu { background: #351b3d; color: #d7aefb; }
+    .cat-footer { background: #3d2b1b; color: #fcad70; }
+    .cat-general_settings { background: #1b383d; color: #78d9ec; }
+    .cat-design_settings { background: #3d1b30; color: #ff8bcb; }
+    .cat-managers { background: #332b26; color: #d7ccc8; }
+    .cat-how_to { background: #1b3d2b; color: #81c995; }
+    .cat-troubleshooting { background: #3d351b; color: #fdd663; }
+    .cat-follow_up { background: #1e3a5f; color: #8ab4f8; }
+    .cat-general { background: #26332d; color: #a8b8b0; }
+    .gmail-row-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    .gmail-message-detail { display: none; padding: 20px 24px 24px; border-top: 1px solid var(--line); background: #17211c; }
+    .gmail-message-row.open .gmail-message-detail { display: block; }
+    .gmail-detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .gmail-detail-subject { font-size: 18px; font-weight: 600; color: var(--ink); margin: 0; }
+    .gmail-detail-sender-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .gmail-detail-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2f483a; color: var(--mint); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+    .gmail-detail-sender-info { display: flex; flex-direction: column; gap: 2px; }
+    .gmail-detail-sender-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .gmail-detail-sender-email { font-size: 11px; color: var(--muted); }
+    .gmail-detail-body { font-size: 13px; line-height: 1.6; color: #d8e2da; white-space: pre-wrap; margin-bottom: 24px; padding: 14px 18px; border-radius: 8px; background: var(--canvas); border: 1px solid var(--line); }
+    .gmail-rag-card { padding: 18px; border-radius: 10px; background: #1d2b23; border: 1px solid #334e3d; display: flex; flex-direction: column; gap: 12px; }
+    .gmail-rag-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .gmail-rag-title { display: flex; align-items: center; gap: 8px; color: var(--mint); font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+    .gmail-rag-sources { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; }
+    .gmail-rag-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 12px; background: #263c2f; border: 1px solid #3d604b; color: #b6f27c; font-size: 11px; text-decoration: none; }
+    .gmail-rag-pill:hover { background: #314d3c; }
+    .gmail-reply-textarea { width: 100%; min-height: 140px; padding: 12px 14px; border-radius: 6px; border: 1px solid #3b5946; background: #141f19; color: var(--ink); font-size: 13px; line-height: 1.5; resize: vertical; outline: none; }
+    .gmail-reply-textarea:focus { border-color: var(--mint); box-shadow: 0 0 0 2px rgba(182,242,124,0.2); }
+    .gmail-quality-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #d0ded4; cursor: pointer; user-select: none; }
+    .gmail-rag-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+    .gmail-streak-banner { font-size: 11px; color: var(--muted); }
+    .gmail-compose-dialog { width: min(620px, calc(100% - 28px)); margin: auto 28px 20px auto; padding: 0; overflow: hidden; border: 1px solid var(--line); color: var(--ink); background: var(--surface); box-shadow: 0 12px 40px #0008; }
+    .gmail-compose-dialog::backdrop { background: #070a0870; }
+    .gmail-compose-head, .gmail-compose-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; background: var(--rail); }
+    .gmail-compose-form { padding: 14px 18px; }
+    .gmail-compose-form input, .gmail-compose-form textarea { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+    .gmail-compose-form textarea { min-height: 230px; }
+    .gmail-compose-head button { border: 0; color: var(--muted); background: transparent; font-size: 20px; }
+    .gmail-subtools { margin: 22px 0 0; padding-top: 16px; border-top: 1px solid var(--line); }
+    .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .settings-grid .field { margin: 0; }
+    .progress-track { height: 7px; margin: 10px 0; background: var(--rail); border: 1px solid var(--line); }
+    .progress-track span { display: block; width: 0; height: 100%; background: var(--mint); transition: width .2s ease; }
+    .integration-note { color: var(--yellow); font-size: 12px; }
+    .confirmation-dialog { width: min(680px, calc(100% - 32px)); max-height: min(80vh, 760px); padding: 24px; border: 1px solid var(--line); color: var(--ink); background: var(--surface); }
+    .confirmation-dialog::backdrop { background: #070a08cc; }
+    .confirmation-dialog h2 { margin-bottom: 8px; }
+    .confirmation-summary { max-height: 48vh; overflow: auto; padding: 14px; border: 1px solid var(--line); background: #121815; overflow-wrap: anywhere; font: 13px/1.55 system-ui, sans-serif; }
+    .confirmation-summary h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 14px 0 6px; }
+    .confirmation-summary h3:first-child { margin-top: 0; }
+    .confirmation-summary .stat-row { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; border-bottom: 1px solid #ffffff0d; font-size: 13px; }
+    .confirmation-summary .stat-row span:last-child { color: var(--green); font-family: Consolas, monospace; text-align: right; }
+    .confirmation-summary .url-chip { font: 11px/1.5 Consolas, monospace; color: #8ec07c; word-break: break-all; }
+    .confirmation-summary .sitemap-entry { border: 1px solid var(--line); border-radius: 4px; padding: 8px 10px; margin: 4px 0; }
+    .confirmation-summary .sitemap-entry .sitemap-url { font: 11px/1.5 Consolas, monospace; color: var(--green); word-break: break-all; }
+    .confirmation-summary .sitemap-badge { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; background: #2a3d30; color: #aed6a4; margin-left: 4px; vertical-align: middle; }
+    body:not(.authenticated) #app-shell { display: none; }
+    .auth-gate { display: none; min-height: 100vh; place-items: center; padding: 24px; background: radial-gradient(circle at top, #26372d 0, var(--canvas) 55%); }
+    body:not(.authenticated) .auth-gate { display: grid; }
+    .auth-card { width: min(440px, 100%); padding: 28px; border: 1px solid var(--line); background: var(--surface); }
+    .auth-card h1 { font: 500 30px/1.15 Georgia, serif; }
+    .password-control { display: flex; }
+    .password-control input { min-width: 0; border-radius: 5px 0 0 5px; }
+    .password-toggle { display: grid; width: 44px; flex: 0 0 44px; place-items: center; border: 1px solid var(--line); border-left: 0; border-radius: 0 5px 5px 0; color: var(--muted); background: #121815; }
+    .password-toggle:hover { color: var(--ink); }
+    .password-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+    .auth-switch { margin-top: 16px; padding: 0; border: 0; color: var(--mint); background: transparent; text-decoration: underline; }
+    .auth-link { display: block; margin-top: 14px; padding: 0; border: 0; color: var(--blue); background: transparent; text-decoration: underline; font-size: 12px; }
+    .auth-link[hidden] { display: none; }
+    #account-email { color: var(--muted); font-size: 12px; }
     @media(max-width: 820px) {
       .shell { grid-template-columns: 1fr; }
       aside { position: sticky; top: 0; z-index: 5; padding: 10px 14px; border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; }
@@ -114,6 +293,12 @@
       .content { padding: 30px 18px 55px; }
       .page-heading { align-items: start; flex-direction: column; gap: 5px; }
       .layout { grid-template-columns: 1fr; }
+      .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gmail-workspace { grid-template-columns: 155px minmax(0, 1fr); }
+      .gmail-sidebar { padding: 12px 6px; }
+      .gmail-main { padding: 14px 12px; }
+      .gmail-message summary { grid-template-columns: minmax(100px, .8fr) minmax(0, 1.4fr) auto; gap: 8px; }
+      .gmail-message-preview { display: none; }
     }
     @media(max-width: 480px) {
       .brand-mark { font-size: 12px; }
@@ -124,11 +309,53 @@
       .metric-row { gap: 6px; }
       .metric strong { font-size: 18px; }
       .columns { grid-template-columns: 1fr; }
+      .settings-grid { grid-template-columns: 1fr; }
+      .inline-fields { grid-template-columns: 1fr; }
+      .gmail-workspace { display: block; min-height: 0; }
+      .gmail-sidebar { padding: 8px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .gmail-compose-button { width: auto; min-height: 38px; padding: 6px 12px; }
+      .gmail-folder-list { display: flex; flex-wrap: wrap; }
+      .gmail-folder-list .folder-button { width: auto; padding: 7px 9px; border-radius: 16px; }
+      .gmail-main { padding: 12px 8px; }
+      .gmail-toolbar { flex-wrap: wrap; }
+      .gmail-search { order: -1; flex: 1 1 100%; }
+      .gmail-message summary { grid-template-columns: minmax(0, 1fr) auto; }
+      .gmail-message-subject { display: none; }
+      .gmail-compose-dialog { margin: auto; }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
+  <section class="auth-gate" id="auth-gate">
+    <div class="auth-card">
+      <div class="brand-mark"><span class="mark">A</span> AI Tech Consultant</div>
+      <div class="eyebrow" style="margin-top:24px">Account required</div>
+      <h1 id="auth-title">Sign in to your account</h1>
+      <p class="intro">Sign in or create an account to connect and manage your sitemap sources.</p>
+      <form id="auth-form">
+        <div class="field"><label for="auth-email">Email address</label><input id="auth-email" type="email" autocomplete="email" required maxlength="254"></div>
+        <div class="field"><label id="auth-password-label" for="auth-password">Password</label><div class="password-control"><input id="auth-password" type="password" autocomplete="current-password" required minlength="1" maxlength="128"><button class="password-toggle" id="password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password"><svg id="password-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg><svg id="password-eye-off" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="m3 3 18 18"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 5.2A10.7 10.7 0 0 1 12 5c6.4 0 10 7 10 7a14.5 14.5 0 0 1-3.1 3.9"></path><path d="M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7a10.7 10.7 0 0 0 4-.8"></path></svg></button></div></div>
+        <div id="auth-feedback" aria-live="polite"></div>
+        <button class="button primary" id="auth-submit" type="submit">Sign in</button>
+      </form>
+      <button class="auth-link" id="forgot-password" type="button">Forgot password?</button>
+      <form id="forgot-password-form" hidden>
+        <div class="field"><label for="reset-email">Email address</label><input id="reset-email" type="email" autocomplete="email" required maxlength="254"></div>
+        <div id="reset-request-feedback" aria-live="polite"></div>
+        <button class="button primary" type="submit">Send reset email</button>
+        <button class="auth-link" id="reset-request-back" type="button">Back to sign in</button>
+      </form>
+      <form id="reset-password-form" hidden>
+        <div class="field"><label for="new-password">New password</label><div class="password-control"><input id="new-password" type="password" autocomplete="new-password" required minlength="12" maxlength="128"><button class="password-toggle" id="new-password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button></div></div>
+        <div id="reset-complete-feedback" aria-live="polite"></div>
+        <button class="button primary" type="submit">Reset password</button>
+        <button class="auth-link" id="reset-password-back" type="button">Back to sign in</button>
+      </form>
+      <button class="auth-switch" id="auth-switch" type="button">New here? Create an account</button>
+      <p class="subtle" style="margin-top:20px">New passwords must be at least 12 characters. Sessions expire after 7 days.</p>
+    </div>
+  </section>
+  <div class="shell" id="app-shell">
     <aside>
       <div class="brand">
         <div class="brand-mark"><span class="mark">A</span> AI Tech Consultant</div>
@@ -147,47 +374,229 @@
     <main>
       <header class="topbar">
         <div class="crumb">Business Labs / Capstone / <span id="crumb-name">Knowledge Brain</span></div>
-        <div class="service-status"><span class="pulse" id="health-dot"></span><span id="health-label">Checking services</span></div>
+        <div class="toolbar-actions"><div class="service-status"><span class="pulse" id="health-dot"></span><span id="health-label">Checking services</span></div><span id="account-email"></span><button class="button" id="sign-out" type="button">Sign out</button></div>
       </header>
       <div class="content">
         <section class="view active" id="view-knowledge">
-          <div class="page-heading">
-            <div><div class="eyebrow">Task 01 · Shared service</div><h1>Knowledge Brain</h1><p class="intro">Search indexed product guidance. Answers include their source; questions without evidence are escalated instead of guessed.</p></div>
-          </div>
-          <div class="metric-row">
-            <div class="metric"><strong>Evidence first</strong><span>Extractive answers with citations</span></div>
-            <div class="metric"><strong>Daily-ready</strong><span>Incremental sitemap ingestion API</span></div>
-            <div class="metric"><strong>Escalation</strong><span>Expert answers re-enter retrieval</span></div>
+          <div class="page-heading"><div><div class="eyebrow">Task 01 · Knowledge management</div><h1>Knowledge base</h1><p class="intro">Manage sitemap sources, review ingestion status, and ask questions grounded in indexed content.</p></div></div>
+          <div class="dashboard-grid" aria-label="Knowledge base processing statistics">
+            <div class="dashboard-stat"><strong id="stat-processed">—</strong><span>Total processed pages</span></div>
+            <div class="dashboard-stat"><strong id="stat-embedded">—</strong><span>Successfully embedded pages</span></div>
+            <div class="dashboard-stat"><strong id="stat-failed">—</strong><span>Failed pages</span></div>
+            <div class="dashboard-stat"><strong id="stat-pending">—</strong><span>Pending pages</span></div>
+            <div class="dashboard-stat"><strong id="stat-duplicates">—</strong><span>Duplicate URLs skipped</span></div>
+            <div class="dashboard-stat"><strong id="stat-sync">Never</strong><span>Last synchronization</span></div>
+            <div class="dashboard-stat"><strong id="stat-archived">—</strong><span>Archived pages</span></div>
+            <div class="dashboard-stat"><strong id="stat-progress">Idle</strong><span>Current run</span></div>
+            <div class="dashboard-stat"><strong id="stat-redirects-301">—</strong><span>301 Redirects</span></div>
+            <div class="dashboard-stat"><strong id="stat-errors-404">—</strong><span>404 Errors</span></div>
+            <div class="dashboard-stat"><strong id="stat-active">—</strong><span>Active pages</span></div>
           </div>
           <div class="layout">
             <div>
               <div class="section">
-                <div class="section-head"><h2>Ask the product knowledge base</h2><span class="badge">GET /ask</span></div>
-                <form id="knowledge-form">
-                  <div class="field"><label for="question">Question</label><textarea id="question" required placeholder="How do I update the logo on my site?"></textarea></div>
-                  <div class="actions"><button class="button primary" type="submit">⌕ Search knowledge</button><button class="button ghost" type="button" id="unanswerable-example">Try an unsupported question</button></div>
-                </form>
+                <div class="section-head"><h2>Sitemap sources</h2><span class="badge">Source setup</span></div>
+                <div class="field"><label for="sitemap-url">Add one or more sitemap or website URLs</label><div class="inline-fields"><input id="sitemap-url" type="url" placeholder="https://example.com/sitemap.xml or https://example.com"><button class="button" id="add-sitemap" type="button">Add URL</button></div></div>
+                <div id="sitemap-list" class="sitemap-list"><div class="empty">No sitemap URLs connected yet.</div></div>
+                <div id="sitemap-summary" class="notice">Add sitemap URLs to review your source list before ingestion.</div>
+                <div class="notice warning">Starting ingestion processes every URL discovered in your connected sitemaps, including nested sitemap indexes. You can also add plain website URLs — the system will attempt to discover sitemaps automatically.</div>
+                <div class="actions"><button class="button primary" id="run-ingestion" type="button">Review and start ingestion</button><button class="button" id="refresh-ingestion" type="button">Refresh status</button></div>
+                <div class="progress-track" role="progressbar" aria-label="Ingestion progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="ingestion-progress"></span></div>
+                <div class="subtle" id="ingestion-eta">Estimated processing time will appear after a run starts.</div>
+                <div class="results" id="ingestion-result" aria-live="polite"><div class="result-box empty">No ingestion run started.</div></div>
               </div>
-              <div class="results" id="knowledge-result" aria-live="polite"><div class="result-box empty">Your answer and evidence will appear here.</div></div>
+              <div class="section">
+                <div class="section-head"><h2>Ask the knowledge base</h2><span class="badge">GET /ask</span></div>
+                  <p class="subtle">Ask naturally. Retrieved articles and recent conversation context are included automatically.</p>
+                <div class="actions"><button class="button ghost" type="button" id="new-conversation">New conversation</button></div>
+                <form id="knowledge-form"><div class="field"><label for="question">Question</label><textarea id="question" required placeholder="Ask a product question or follow up on the previous answer."></textarea></div><div class="actions"><button class="button primary" type="submit">⌕ Ask a follow-up</button><button class="button ghost" type="button" id="unanswerable-example">Try an unsupported question</button></div></form>
+                <div class="results" id="knowledge-result" aria-live="polite"><div class="result-box empty">Your answer and evidence will appear here.</div></div>
+              </div>
             </div>
             <div>
               <div class="section">
-                <div class="section-head"><h2>Ingestion run</h2><span class="badge">Polite crawl</span></div>
-                <p class="subtle">Start with a small batch. Each page is checkpointed, deduplicated, and retried independently.</p>
-                <div class="field"><label for="ingestion-limit">Maximum pages</label><input id="ingestion-limit" type="number" min="1" max="1000" value="10"></div>
-                <div class="actions"><button class="button primary" id="run-ingestion" type="button">Run ingestion</button><button class="button" id="refresh-ingestion" type="button">Refresh status</button></div>
-                <div class="results" id="ingestion-result" aria-live="polite"><div class="result-box empty">No ingestion run started.</div></div>
+                <div class="section-head"><h2>Sync & retention</h2></div>
+                <div class="settings-grid">
+                  <div class="field"><label for="sync-schedule">Automatic sitemap recheck</label><select id="sync-schedule"><option value="manual">Manual only</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="every_15_days">Every 15 days</option><option value="every_30_days">Every 30 days</option><option value="monthly">Monthly</option></select></div>
+                  <div class="field"><label for="missing-retention">Archive missing URLs after</label><select id="missing-retention"><option value="1">Immediately (1 check)</option><option value="2">2 consecutive checks</option><option value="15">15 consecutive checks</option><option value="30">30 consecutive checks</option></select></div>
+                </div>
+                <p class="subtle" style="margin-top:12px">Missing pages remain active until the selected number of consecutive successful sitemap checks. Archived pages and their embeddings are retained for review and can be restored.</p>
+                <div class="section-head"><h2>Content change history</h2><button class="button ghost" id="refresh-change-history" type="button">Refresh history</button></div>
+                <div class="list" id="article-change-list"><div class="empty">Detected content changes will appear here after a sitemap sync.</div></div>
+                <div id="schedule-feedback" aria-live="polite"></div>
+                <div class="notice">The recheck schedule and missing-page retention threshold are saved to your account. Scheduled checks run while the application scheduler is running.</div>
               </div>
-              <div class="section"><div class="section-head"><h2>Evidence state</h2></div><div class="notice warning">Screenshot descriptions are not vision-generated in this configuration. The system only retains image URLs, alt text, and article context.</div></div>
+              <div class="section">
+                <div class="section-head"><h2>Archived knowledge base</h2><button class="button ghost" id="refresh-archive" type="button">Refresh archive</button></div>
+                <p class="subtle">Archived URLs are kept with their article text and embeddings. Restore a page to return it to active search.</p>
+                <div id="archive-list" class="list"><div class="empty">No archived pages.</div></div>
+                <div class="notice warning">Screenshot descriptions are not vision-generated in this configuration. Image URLs, alt text, and article context are retained.</div>
+              </div>
             </div>
           </div>
         </section>
 
         <section class="view" id="view-inbox">
-          <div class="page-heading"><div><div class="eyebrow">Task 02 · TypeScript</div><h1>Inbox review</h1><p class="intro">Classify the request, fetch product evidence from Task 1, then prepare a draft for a human decision.</p></div></div>
-          <div class="layout">
+          <div class="gmail-app-container">
+            <!-- Google / Gmail Top Header -->
+            <header class="gmail-top-header">
+              <div class="gmail-header-left">
+                <button class="gmail-icon-btn" id="gmail-menu-toggle" type="button" aria-label="Main menu">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                </button>
+                <div class="gmail-logo-container">
+                  <svg viewBox="0 0 24 24" width="28" height="28">
+                    <path fill="#4285F4" d="M22 6.5l-10 7-10-7V4l10 7 10-7v2.5z"/>
+                    <path fill="#34A853" d="M2 19V6.5l10 7 10-7V19c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2z"/>
+                    <path fill="#EA4335" d="M22 6.5V4c0-1.1-.9-2-2-2h-1.5l-6.5 4.5 10 7V6.5z"/>
+                    <path fill="#FBBC04" d="M2 6.5V4c0-1.1.9-2 2-2h1.5l6.5 4.5-10 7V6.5z"/>
+                  </svg>
+                  <span class="gmail-logo-text">Gmail</span>
+                </div>
+              </div>
+              <div class="gmail-header-center">
+                <div class="gmail-search-bar">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="color:var(--muted)"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                  <input class="gmail-search-input" id="gmail-search" type="search" placeholder="Search in mail" aria-label="Search in mail">
+                  <button class="gmail-icon-btn" id="gmail-search-button" type="button" aria-label="Search">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="gmail-header-right">
+                <div class="gmail-active-status" id="gmail-active-badge">
+                  <span class="gmail-status-dot"></span> Active
+                </div>
+                <button class="gmail-icon-btn" id="inbox-settings" type="button" title="Settings" aria-label="Settings">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </button>
+                <div class="gmail-avatar" id="gmail-avatar-badge" title="Google Account">S</div>
+              </div>
+            </header>
+
+            <!-- Gmail Body Layout -->
+            <div class="gmail-body-layout">
+              <!-- Far Left Mini Rail -->
+              <aside class="gmail-mini-rail">
+                <button class="gmail-rail-btn active" data-rail-tab="mail" type="button" title="Mail">
+                  <div class="gmail-rail-icon">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span class="gmail-rail-badge" id="gmail-inbox-badge">9</span>
+                  </div>
+                  <span>Mail</span>
+                </button>
+                <button class="gmail-rail-btn" data-rail-tab="chat" type="button" title="Chat">
+                  <div class="gmail-rail-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+                  <span>Chat</span>
+                </button>
+                <button class="gmail-rail-btn" data-rail-tab="spaces" type="button" title="Spaces">
+                  <div class="gmail-rail-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+                  <span>Spaces</span>
+                </button>
+                <button class="gmail-rail-btn" data-rail-tab="meet" type="button" title="Meet">
+                  <div class="gmail-rail-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></div>
+                  <span>Meet</span>
+                </button>
+              </aside>
+
+              <!-- Main Collapsible Left Sidebar -->
+              <aside class="gmail-left-sidebar">
+                <button class="gmail-compose-pill" id="compose-gmail" type="button">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                  <span>Compose</span>
+                </button>
+
+                <nav class="gmail-nav-folders" aria-label="Mail folders">
+                  <button class="gmail-folder-item active" data-gmail-folder="INBOX" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 3H4.99c-1.11 0-1.98.89-1.98 2L3 19c0 1.1.88 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 12h-4c0 1.66-1.35 3-3 3s-3-1.34-3-3H4.99V5H19v10z"/></svg>
+                    <span class="gmail-folder-text">Inbox</span>
+                    <span class="gmail-folder-count" id="gmail-inbox-count">9</span>
+                  </button>
+                  <button class="gmail-folder-item" data-gmail-folder="STARRED" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22 9.24l-7.19-.62L12 2 8.81 8.63 1.62 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.26-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 3.98 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>
+                    <span class="gmail-folder-text">Starred</span>
+                  </button>
+                  <button class="gmail-folder-item" data-gmail-folder="SNOOZED" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    <span class="gmail-folder-text">Snoozed</span>
+                  </button>
+                  <button class="gmail-folder-item" data-gmail-folder="SENT" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    <span class="gmail-folder-text">Sent</span>
+                  </button>
+                  <button class="gmail-folder-item" data-gmail-folder="DRAFT" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"/></svg>
+                    <span class="gmail-folder-text">Drafts</span>
+                  </button>
+                  <button class="gmail-folder-item" data-gmail-folder="SPAM" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <span class="gmail-folder-text">Spam</span>
+                  </button>
+                  <button class="gmail-folder-item" data-gmail-folder="TRASH" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/></svg>
+                    <span class="gmail-folder-text">Trash</span>
+                  </button>
+                </nav>
+
+                <!-- Labels List with Category Colors -->
+                <div class="gmail-labels-section">
+                  <div class="gmail-labels-header">
+                    <span>Labels</span>
+                    <button class="gmail-icon-btn" id="gmail-add-label" type="button" style="width:24px;height:24px;font-size:16px" title="Add label">+</button>
+                  </div>
+                  <div class="gmail-labels-list">
+                    <div class="gmail-label-item" data-label-cat="filters"><span class="label-tag-dot dot-blue"></span><span class="label-name">Filters</span></div>
+                    <div class="gmail-label-item" data-label-cat="home_page"><span class="label-tag-dot dot-green"></span><span class="label-name">Home Page</span></div>
+                    <div class="gmail-label-item" data-label-cat="domain_management"><span class="label-tag-dot dot-yellow"></span><span class="label-name">Domain Management</span></div>
+                    <div class="gmail-label-item" data-label-cat="header"><span class="label-tag-dot dot-red"></span><span class="label-name">Header</span></div>
+                    <div class="gmail-label-item" data-label-cat="main_menu"><span class="label-tag-dot dot-purple"></span><span class="label-name">Main Menu</span></div>
+                    <div class="gmail-label-item" data-label-cat="footer"><span class="label-tag-dot dot-orange"></span><span class="label-name">Footer</span></div>
+                    <div class="gmail-label-item" data-label-cat="general_settings"><span class="label-tag-dot dot-cyan"></span><span class="label-name">General Settings</span></div>
+                    <div class="gmail-label-item" data-label-cat="design_settings"><span class="label-tag-dot dot-pink"></span><span class="label-name">Design Settings</span></div>
+                    <div class="gmail-label-item" data-label-cat="managers"><span class="label-tag-dot dot-brown"></span><span class="label-name">Managers</span></div>
+                  </div>
+                </div>
+
+                <div class="gmail-account-info-box">
+                  <div style="font-weight:600;margin-bottom:4px">Connected account</div>
+                  <div id="gmail-account-email" style="word-break:break-all">Not connected</div>
+                  <div class="actions" style="margin-top:8px;gap:6px">
+                    <button class="button primary" id="connect-gmail" type="button" style="font-size:12px;padding:5px 10px;min-height:30px">Connect</button>
+                    <button class="button" id="connect-demo-gmail" type="button" style="font-size:12px;padding:5px 10px;min-height:30px">Demo Gmail</button>
+                    <button class="button ghost" id="disconnect-gmail" type="button" style="font-size:12px;padding:5px 10px;min-height:30px" hidden>Disconnect</button>
+                  </div>
+                </div>
+              </aside>
+
+              <!-- Main Mail Table Area -->
+              <main class="gmail-main-pane">
+                <div class="gmail-actions-toolbar">
+                  <div class="gmail-actions-left">
+                    <label class="gmail-checkbox-wrap"><input type="checkbox" id="gmail-select-all" aria-label="Select all"><span style="font-size:10px">▾</span></label>
+                    <button class="gmail-tool-btn" id="refresh-gmail" type="button" title="Refresh">↻</button>
+                    <button class="gmail-tool-btn" id="inbox-settings-btn" type="button" title="Settings">⚙</button>
+                    <div class="gmail-status-text" id="gmail-connection-status">Connecting...</div>
+                  </div>
+                  <div class="gmail-actions-right">
+                    <span class="gmail-pagination-text" id="gmail-message-count">1–9 of 9</span>
+                    <button class="gmail-page-btn" type="button" title="Newer">‹</button>
+                    <button class="gmail-page-btn" type="button" title="Older">›</button>
+                  </div>
+                </div>
+
+                <div class="gmail-table-container">
+                  <div class="gmail-list" id="gmail-message-list">
+                    <div class="empty">Connect Gmail or click Demo Gmail to display messages.</div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+          <details class="gmail-subtools">
+            <summary>AI email assistant and review policy</summary>
+            <div class="layout">
             <div class="section">
-              <div class="section-head"><h2>Customer email</h2><span class="badge">POST /draft</span></div>
+              <div class="section-head"><h2>AI email assistant</h2><span class="badge">Task 2 · Inbox Agent</span></div>
               <form id="inbox-form">
                 <div class="field"><label for="email-subject">Subject</label><input id="email-subject" required placeholder="Payment settings question"></div>
                 <div class="field"><label for="email-body">Message</label><textarea id="email-body" required placeholder="Write the customer's message..."></textarea></div>
@@ -204,8 +613,14 @@
                 <li><strong>Autonomy</strong><span>20 unchanged, quality-passed sends are required; high-risk categories remain manual.</span></li>
               </ul>
               <div class="section"><div class="section-head"><h2>Approval ledger</h2></div><p class="subtle">Human outcomes are persisted in the Task 2 data ledger when recorded through the service.</p></div>
+              <div class="section">
+                <div class="section-head"><h2>AI Learning History</h2><button class="button ghost" id="refresh-learning" type="button">Refresh insights</button></div>
+                <p class="subtle">Differences between generated drafts and sent replies are analyzed to improve future responses.</p>
+                <div id="learning-insights-list" class="list"><div class="empty">Learning insights will appear as you edit and send drafts.</div></div>
+              </div>
             </div>
           </div>
+          </details>
         </section>
 
         <section class="view" id="view-scope">
@@ -232,18 +647,903 @@
       </div>
     </main>
   </div>
+  <dialog class="confirmation-dialog" id="ingestion-confirmation" aria-labelledby="ingestion-confirmation-title">
+    <h2 id="ingestion-confirmation-title">Confirm knowledge base creation</h2>
+    <p class="subtle">Review the sitemap discovery summary. No URLs will be fetched for indexing until you confirm.</p>
+    <div class="confirmation-summary" id="ingestion-confirmation-summary"></div>
+    <form method="dialog" class="actions">
+      <button class="button" type="submit" value="cancel">Cancel</button>
+      <button class="button primary" type="submit" value="confirm">Confirm and start</button>
+    </form>
+  </dialog>
+  <dialog class="gmail-settings-dialog" id="gmail-settings-dialog" aria-labelledby="gmail-settings-title">
+    <h2 id="gmail-settings-title">AI Inbox Agent settings</h2>
+    <p class="subtle">Choose active categories and the per-category approval threshold. Auto-send is available only for low-risk categories after the threshold and must be enabled separately.</p>
+    <form id="gmail-settings-form">
+      <div class="field"><label for="gmail-approval-threshold">Unedited quality-approved emails required per category</label><input id="gmail-approval-threshold" type="number" min="1" max="1000" value="20" required></div>
+      <p class="subtle">Auto-send is restricted to low-risk categories (filters, domain, pages, menus, settings, managers, how-to, troubleshooting, follow-up). High-risk categories always require manual review.</p>
+      <div class="gmail-category-list" id="gmail-category-list"></div>
+      <div id="gmail-settings-feedback" aria-live="polite"></div>
+      <div class="actions"><button class="button" type="button" id="gmail-settings-cancel">Cancel</button><button class="button primary" type="submit">Save settings</button></div>
+    </form>
+  </dialog>
+  <dialog class="gmail-compose-dialog" id="gmail-compose-dialog" aria-labelledby="gmail-compose-title">
+    <div class="gmail-compose-head"><strong id="gmail-compose-title">New message</strong><button type="button" id="gmail-compose-close" aria-label="Close compose">×</button></div>
+    <form class="gmail-compose-form" id="gmail-compose-form">
+      <label for="gmail-compose-to">To</label><input id="gmail-compose-to" type="email" autocomplete="email" required>
+      <label for="gmail-compose-subject">Subject</label><input id="gmail-compose-subject" type="text" required maxlength="998">
+      <label for="gmail-compose-body">Message</label><textarea id="gmail-compose-body" required></textarea>
+      <div id="gmail-compose-feedback" aria-live="polite"></div>
+      <div class="gmail-compose-foot"><button class="button primary" type="submit">Send</button><button class="button ghost" id="gmail-compose-cancel" type="button">Discard</button></div>
+    </form>
+  </dialog>
   <script>
     const API = { knowledge: "http://127.0.0.1:8010", inbox: "http://127.0.0.1:8012", scope: "http://127.0.0.1:8011" };
+    const LOCAL_SERVICES_UNAVAILABLE = "Cannot reach the local app services. From the project folder, run `python run.py`, then open http://127.0.0.1:8081/console.html (do not open console.html directly).";
+    const gmailCallback = new URLSearchParams(window.location.search);
+    const gmailConnectedCallback = gmailCallback.has("gmail_connected");
+    const gmailErrorCallback = gmailCallback.has("gmail_error");
+    /* ---------- OAuth redirect interception ----------
+       Google redirects here (console.html) with ?code=...&state=...
+       We forward those params to the inbox agent's /gmail/callback
+       which exchanges the code for tokens and redirects back here. */
+    if (gmailCallback.has("code") && gmailCallback.has("state")) {
+      const forwardUrl = `${API.inbox}/gmail/callback?code=${encodeURIComponent(gmailCallback.get("code"))}&state=${encodeURIComponent(gmailCallback.get("state"))}`;
+      window.location.replace(forwardUrl);
+    }
+    if (gmailConnectedCallback || gmailErrorCallback) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
     const navButtons = [...document.querySelectorAll(".nav-button")];
     const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
     const show = (target, content) => { document.querySelector(target).innerHTML = content; };
     const message = (text, tone = "") => `<div class="notice ${tone}">${escapeHtml(text)}</div>`;
-    const request = async (url, options) => {
-      const response = await fetch(url, options);
+    async function fetchLocalApi(url, options) {
+      try {
+        return await fetch(url, options);
+      } catch (error) {
+        if (error instanceof TypeError) throw new Error(LOCAL_SERVICES_UNAVAILABLE);
+        throw error;
+      }
+    }
+    const request = async (url, options = {}) => {
+      const token = localStorage.getItem("knowledge_token") || sessionStorage.getItem("knowledge_token");
+      const headers = { ...options.headers };
+      if (token && !headers.Authorization && !headers.authorization) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+      const response = await fetchLocalApi(url, {
+        ...options,
+        headers,
+        credentials: url.startsWith(API.knowledge) ? "include" : "same-origin"
+      });
       const data = await response.json();
       if (!response.ok) throw new Error(data.detail || data.error || `Request failed (${response.status})`);
       return data;
     };
+    let _cachedInboxToken = null;
+    let _cachedInboxTokenTime = 0;
+    const requestGmail = async (path, options = {}) => {
+      if (!_cachedInboxToken || (Date.now() - _cachedInboxTokenTime) > 1800000) {
+        const { token } = await request(`${API.knowledge}/auth/inbox-token`);
+        _cachedInboxToken = token;
+        _cachedInboxTokenTime = Date.now();
+      }
+      let response = await fetchLocalApi(`${API.inbox}${path}`, {
+        ...options,
+        headers: { ...options.headers, Authorization: `Bearer ${_cachedInboxToken}` },
+      });
+      if (response.status === 401) {
+        const { token } = await request(`${API.knowledge}/auth/inbox-token`);
+        _cachedInboxToken = token;
+        _cachedInboxTokenTime = Date.now();
+        response = await fetchLocalApi(`${API.inbox}${path}`, {
+          ...options,
+          headers: { ...options.headers, Authorization: `Bearer ${_cachedInboxToken}` },
+        });
+      }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+      return data;
+    };
+
+    let sitemapUrls = [];
+    let sitemapSchedule = "manual";
+    let sitemapRetentionChecks = 1;
+    let authMode = "login";
+    let selectedGmailQuery = "";
+    const conversationStorageKey = "ai-tech-consultant.knowledge-conversation";
+    let conversationHistory = JSON.parse(sessionStorage.getItem(conversationStorageKey) || "[]");
+    const formatCount = (value) => Number.isFinite(value) ? String(value) : "—";
+    let selectedGmailFolder = "INBOX";
+    const gmailCategoryLabels = {
+      filters: "Filters",
+      home_page: "Home Page",
+      domain_management: "Domain Management",
+      header: "Header",
+      main_menu: "Main Menu",
+      footer: "Footer",
+      general_settings: "General Settings",
+      design_settings: "Design Settings",
+      managers: "Managers",
+      how_to: "How-To",
+      troubleshooting: "Troubleshooting",
+      project_request: "Project Requests",
+      refund_cancellation: "Refunds & Cancellations",
+      complaint: "Complaints",
+      quote_request: "Quotes",
+      follow_up: "Follow-Ups",
+      general: "General",
+    };
+    const renderSitemaps = () => {
+      const container = document.querySelector("#sitemap-list");
+      container.innerHTML = sitemapUrls.length ? sitemapUrls.map((source) => `<div class="sitemap-item"><span>${escapeHtml(source.url)}</span><button type="button" data-remove-sitemap="${source.id}" aria-label="Remove sitemap">Remove</button></div>`).join("") : '<div class="empty">No sitemap URLs connected to this account.</div>';
+      container.querySelectorAll("[data-remove-sitemap]").forEach((button) => button.addEventListener("click", async () => {
+        button.disabled = true;
+        try {
+          await request(`${API.knowledge}/sitemaps/${button.dataset.removeSitemap}`, { method: "DELETE" });
+          await loadSitemaps();
+        } catch (error) {
+          button.disabled = false;
+          document.querySelector("#sitemap-summary").textContent = `Could not remove sitemap: ${error.message}`;
+        }
+      }));
+      document.querySelector("#sitemap-summary").textContent = sitemapUrls.length
+        ? `${sitemapUrls.length} sitemap URL${sitemapUrls.length === 1 ? "" : "s"} connected to your account. Automatic recheck: ${sitemapSchedule}. Missing-page archive threshold: ${sitemapRetentionChecks} successful check${sitemapRetentionChecks === 1 ? "" : "s"}.`
+        : "Add sitemap URLs to review your source list before ingestion.";
+    };
+    async function loadSitemaps() {
+      const data = await request(`${API.knowledge}/sitemaps`);
+      sitemapUrls = data.sitemaps;
+      sitemapSchedule = data.schedule;
+      sitemapRetentionChecks = data.retention_checks;
+      document.querySelector("#sync-schedule").value = sitemapSchedule;
+      document.querySelector("#missing-retention").value = String(sitemapRetentionChecks);
+      renderSitemaps();
+    }
+    const handleAddSitemap = async () => {
+      const field = document.querySelector("#sitemap-url");
+      let url = field.value.trim();
+      if (!url) {
+        document.querySelector("#sitemap-summary").className = "notice warning";
+        document.querySelector("#sitemap-summary").textContent = "Please enter a sitemap URL.";
+        return;
+      }
+      if (!/^https?:\/\//i.test(url)) {
+        url = "https://" + url;
+        field.value = url;
+      }
+      if (sitemapUrls.some((source) => source.url === url)) {
+        document.querySelector("#sitemap-summary").className = "notice warning";
+        document.querySelector("#sitemap-summary").textContent = "This sitemap is already listed.";
+        return;
+      }
+      const button = document.querySelector("#add-sitemap");
+      button.disabled = true;
+      document.querySelector("#sitemap-summary").className = "notice";
+      document.querySelector("#sitemap-summary").textContent = "Connecting sitemap...";
+      try {
+        await request(`${API.knowledge}/sitemaps`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+        field.value = "";
+        document.querySelector("#sitemap-summary").className = "notice success";
+        document.querySelector("#sitemap-summary").textContent = `Connected sitemap: ${url}`;
+        await loadSitemaps();
+      } catch (error) {
+        document.querySelector("#sitemap-summary").className = "notice danger";
+        document.querySelector("#sitemap-summary").textContent = `Could not connect sitemap: ${error.message}`;
+      } finally {
+        button.disabled = false;
+      }
+    };
+    document.querySelector("#add-sitemap").addEventListener("click", handleAddSitemap);
+    document.querySelector("#sitemap-url").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAddSitemap();
+      }
+    });
+
+    document.querySelector("#auth-switch").addEventListener("click", () => {
+      authMode = authMode === "login" ? "register" : "login";
+      document.querySelector("#auth-title").textContent = authMode === "register" ? "Create your account" : "Sign in to your account";
+      document.querySelector("#auth-submit").textContent = authMode === "register" ? "Create account" : "Sign in";
+      document.querySelector("#auth-switch").textContent = authMode === "register" ? "Already have an account? Sign in" : "New here? Create an account";
+      document.querySelector("#forgot-password").hidden = authMode !== "login";
+      document.querySelector("#auth-password").setAttribute("autocomplete", authMode === "register" ? "new-password" : "current-password");
+      document.querySelector("#auth-password").setAttribute("minlength", authMode === "register" ? "12" : "1");
+      document.querySelector("#auth-password-label").textContent = authMode === "register" ? "Create a password" : "Password";
+      document.querySelector("#auth-password").setAttribute("type", "password");
+      document.querySelector("#password-toggle").setAttribute("aria-label", "Show password");
+      document.querySelector("#password-toggle").setAttribute("title", "Show password");
+      document.querySelector("#password-toggle").setAttribute("aria-pressed", "false");
+      document.querySelector("#password-eye").hidden = false;
+      document.querySelector("#password-eye-off").hidden = true;
+      document.querySelector("#auth-feedback").innerHTML = "";
+    });
+    document.querySelector("#password-toggle").addEventListener("click", () => {
+      const password = document.querySelector("#auth-password");
+      const visible = password.type === "password";
+      password.type = visible ? "text" : "password";
+      document.querySelector("#password-toggle").setAttribute("aria-label", visible ? "Hide password" : "Show password");
+      document.querySelector("#password-toggle").setAttribute("title", visible ? "Hide password" : "Show password");
+      document.querySelector("#password-toggle").setAttribute("aria-pressed", String(visible));
+      document.querySelector("#password-eye").hidden = visible;
+      document.querySelector("#password-eye-off").hidden = !visible;
+    });
+    document.querySelector("#new-password-toggle").addEventListener("click", () => {
+      const password = document.querySelector("#new-password");
+      const visible = password.type === "password";
+      password.type = visible ? "text" : "password";
+      document.querySelector("#new-password-toggle").setAttribute("aria-label", visible ? "Hide password" : "Show password");
+      document.querySelector("#new-password-toggle").setAttribute("title", visible ? "Hide password" : "Show password");
+      document.querySelector("#new-password-toggle").setAttribute("aria-pressed", String(visible));
+    });
+    const resetToken = new URLSearchParams(window.location.search).get("reset_token");
+    if (resetToken) {
+      window.history.replaceState(null, "", window.location.pathname);
+      document.querySelector("#auth-title").textContent = "Choose a new password";
+      document.querySelector("#auth-form").hidden = true;
+      document.querySelector("#auth-switch").hidden = true;
+      document.querySelector("#reset-password-form").hidden = false;
+    }
+    document.querySelector("#forgot-password").addEventListener("click", () => {
+      document.querySelector("#auth-title").textContent = "Reset your password";
+      document.querySelector("#auth-form").hidden = true;
+      document.querySelector("#auth-switch").hidden = true;
+      document.querySelector("#forgot-password").hidden = true;
+      document.querySelector("#forgot-password-form").hidden = false;
+      document.querySelector("#reset-email").value = document.querySelector("#auth-email").value;
+    });
+    document.querySelector("#reset-request-back").addEventListener("click", () => {
+      document.querySelector("#forgot-password-form").hidden = true;
+      document.querySelector("#auth-form").hidden = false;
+      document.querySelector("#auth-switch").hidden = false;
+      authMode = "login";
+      document.querySelector("#auth-title").textContent = "Sign in to your account";
+      document.querySelector("#auth-submit").textContent = "Sign in";
+      document.querySelector("#auth-switch").textContent = "New here? Create an account";
+      document.querySelector("#auth-password-label").textContent = "Password";
+      document.querySelector("#auth-password").setAttribute("autocomplete", "current-password");
+      document.querySelector("#forgot-password").hidden = false;
+      document.querySelector("#auth-feedback").innerHTML = "";
+      document.querySelector("#reset-request-feedback").innerHTML = "";
+    });
+    document.querySelector("#reset-password-back").addEventListener("click", () => {
+      document.querySelector("#reset-password-form").hidden = true;
+      document.querySelector("#auth-form").hidden = false;
+      document.querySelector("#auth-switch").hidden = false;
+      document.querySelector("#auth-title").textContent = "Sign in to your account";
+      authMode = "login";
+      document.querySelector("#auth-submit").textContent = "Sign in";
+      document.querySelector("#auth-switch").textContent = "New here? Create an account";
+      document.querySelector("#auth-password-label").textContent = "Password";
+      document.querySelector("#auth-password").setAttribute("autocomplete", "current-password");
+      document.querySelector("#forgot-password").hidden = false;
+    });
+    document.querySelector("#forgot-password-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submit = document.querySelector("#forgot-password-form button[type='submit']");
+      submit.disabled = true;
+      document.querySelector("#reset-request-feedback").innerHTML = "";
+      try {
+        const result = await request(`${API.knowledge}/auth/password-reset/request`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: document.querySelector("#reset-email").value })
+        });
+        if (result.reset_url) {
+          window.location.assign(result.reset_url);
+          return;
+        }
+        document.querySelector("#reset-request-feedback").innerHTML = message(result.message, "success");
+      } catch (error) {
+        const recoverySteps = error.message.includes("Password reset email is not configured")
+          ? '<p class="subtle">For this local app, stop the server with Ctrl+C, open PowerShell in the project folder, and run <code>python reset_account_password.py</code>. This securely resets the existing local account; it does not create another account.</p>'
+          : "";
+        document.querySelector("#reset-request-feedback").innerHTML = `${message(error.message, "danger")}${recoverySteps}`;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+    document.querySelector("#reset-password-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submit = document.querySelector("#reset-password-form button[type='submit']");
+      submit.disabled = true;
+      document.querySelector("#reset-complete-feedback").innerHTML = "";
+      try {
+        const result = await request(`${API.knowledge}/auth/password-reset/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: resetToken, password: document.querySelector("#new-password").value })
+        });
+        document.querySelector("#reset-complete-feedback").innerHTML = message(result.message, "success");
+        document.querySelector("#reset-password-form").hidden = true;
+        document.querySelector("#auth-title").textContent = "Sign in to your account";
+        document.querySelector("#auth-form").hidden = false;
+        document.querySelector("#auth-switch").hidden = false;
+        authMode = "login";
+        document.querySelector("#auth-submit").textContent = "Sign in";
+        document.querySelector("#auth-switch").textContent = "New here? Create an account";
+        document.querySelector("#forgot-password").hidden = false;
+        document.querySelector("#auth-password-label").textContent = "Password";
+        document.querySelector("#auth-password").setAttribute("autocomplete", "current-password");
+        document.querySelector("#auth-password").setAttribute("minlength", "1");
+        document.querySelector("#new-password").value = "";
+        document.querySelector("#auth-feedback").innerHTML = document.querySelector("#reset-complete-feedback").innerHTML;
+      } catch (error) {
+        document.querySelector("#reset-complete-feedback").innerHTML = message(error.message, "danger");
+      } finally {
+        submit.disabled = false;
+      }
+    });
+    function showAuthenticated(user) {
+      document.body.classList.add("authenticated");
+      document.querySelector("#account-email").textContent = user.email;
+    }
+    async function loadGmailInbox(folder = selectedGmailFolder, query = selectedGmailQuery) {
+      const statusEl = document.querySelector("#gmail-connection-status");
+      selectedGmailFolder = folder;
+      selectedGmailQuery = query.trim();
+      /* Highlight active folder */
+      document.querySelectorAll("[data-gmail-folder]").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.gmailFolder === folder);
+      });
+      /* Highlight active label */
+      document.querySelectorAll(".gmail-label-item").forEach((el) => el.classList.remove("active"));
+      try {
+        const status = await requestGmail("/gmail/status");
+        document.querySelector("#connect-gmail").hidden = status.connected;
+        const connectDemoBtn = document.querySelector("#connect-demo-gmail");
+        if (connectDemoBtn) connectDemoBtn.hidden = status.connected;
+        document.querySelector("#disconnect-gmail").hidden = !status.connected;
+        document.querySelector("#compose-gmail").disabled = !status.connected || !status.sendEnabled;
+        document.querySelector("#gmail-account-email").textContent = status.email || "Not connected";
+        const activeBadge = document.querySelector("#gmail-active-badge");
+        if (activeBadge) activeBadge.style.display = status.connected ? "inline-flex" : "none";
+        if (!status.connected && !status.configured) {
+          showGmailSetupInstructions();
+          return;
+        }
+        if (!status.connected) {
+          document.querySelector("#gmail-message-list").innerHTML = '<div class="empty" style="padding:40px 24px;text-align:center">Connect Gmail or click <b>Demo Gmail</b> to display messages.</div>';
+          document.querySelector("#gmail-message-count").textContent = "0";
+          document.querySelector("#compose-gmail").disabled = true;
+          statusEl.textContent = gmailErrorCallback
+            ? "Authorization did not complete."
+            : "Not connected";
+          return;
+        }
+        statusEl.textContent = status.sendEnabled
+          ? `Connected · ${status.email}`
+          : `Read-only · ${status.email}`;
+        document.querySelector("#compose-gmail").disabled = !status.sendEnabled;
+        document.querySelector("#gmail-message-list").innerHTML = '<div class="empty" style="padding:40px 24px;text-align:center">Loading inbox messages…</div>';
+        const data = await requestGmail(`/gmail/messages?${new URLSearchParams({
+          maxResults: "75",
+          folder,
+          ...(selectedGmailQuery ? { q: selectedGmailQuery } : {}),
+        })}`);
+        const msgs = data.messages;
+        document.querySelector("#gmail-message-count").textContent = msgs.length ? `1–${msgs.length} of ${msgs.length}` : "0";
+        document.querySelector("#gmail-inbox-count").textContent = folder === "INBOX" ? String(msgs.length) : document.querySelector("#gmail-inbox-count").textContent;
+        document.querySelector("#gmail-inbox-badge").textContent = folder === "INBOX" ? String(msgs.length) : document.querySelector("#gmail-inbox-badge").textContent;
+        if (!msgs.length) {
+          document.querySelector("#gmail-message-list").innerHTML = '<div class="empty" style="padding:40px 24px;text-align:center">No messages in this folder.</div>';
+          return;
+        }
+        document.querySelector("#gmail-message-list").innerHTML = msgs.map((email) => {
+          const draft = email.draft;
+          const catKey = draft?.category || "";
+          const catLabel = gmailCategoryLabels[catKey] || catKey;
+          const catClass = catKey ? `cat-${catKey}` : "";
+          const senderName = email.from.replace(/<.*>/, "").trim() || email.from;
+          const dateStr = email.date ? new Date(email.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "";
+          const isUnread = !email.sent && !draft?.reply;
+          return `<div class="gmail-message-row${isUnread ? " unread" : ""}" data-msg-id="${escapeHtml(email.id)}">
+  <div class="gmail-row-summary">
+    <div class="gmail-row-left">
+      <input type="checkbox" class="gmail-row-check" aria-label="Select">
+      <span class="gmail-star-icon" data-star="${escapeHtml(email.id)}">☆</span>
+      <span class="gmail-row-sender">${escapeHtml(senderName)}</span>
+    </div>
+    <div class="gmail-row-content">
+      <span class="gmail-row-subject">${escapeHtml(email.subject)}</span>
+      <span class="gmail-row-dash">—</span>
+      <span class="gmail-row-snippet">${escapeHtml(email.snippet)}</span>
+    </div>
+    <div class="gmail-row-right">
+      ${catLabel ? `<span class="gmail-cat-pill ${catClass}">${escapeHtml(catLabel)}</span>` : ""}
+      <span class="gmail-row-date">${escapeHtml(dateStr)}</span>
+    </div>
+  </div>
+  <div class="gmail-message-detail">
+    <div class="gmail-detail-header">
+      <h3 class="gmail-detail-subject">${escapeHtml(email.subject)}</h3>
+      <a class="muted-link" href="https://mail.google.com/mail/u/0/#all/${encodeURIComponent(email.id)}" target="_blank" rel="noreferrer">Open in Gmail ↗</a>
+    </div>
+    <div class="gmail-detail-sender-row">
+      <div class="gmail-detail-avatar">${escapeHtml(senderName.charAt(0).toUpperCase())}</div>
+      <div class="gmail-detail-sender-info">
+        <div class="gmail-detail-sender-name">${escapeHtml(senderName)}</div>
+        <div class="gmail-detail-sender-email">${escapeHtml(email.from)} · ${escapeHtml(email.date)}</div>
+      </div>
+    </div>
+    <div class="gmail-detail-body">${escapeHtml(email.body || email.snippet)}</div>
+    ${email.sent
+      ? '<div class="notice success">A reply has already been sent for this message.</div>'
+      : email.draftError
+        ? `<div class="notice warning">${escapeHtml(email.draftError)}</div>`
+        : draft?.reply
+          ? `<div class="gmail-rag-card">
+              <div class="gmail-rag-header">
+                <div class="gmail-rag-title">✦ AI Draft Reply (Grounded via RAG)</div>
+                ${draft.sources?.length ? `<div class="gmail-rag-sources">${draft.sources.map((s) => `<a class="gmail-rag-pill" href="${escapeHtml(s.url)}" target="_blank" rel="noreferrer">📄 ${escapeHtml(s.title || s.url)}</a>`).join("")}</div>` : ""}
+              </div>
+              <textarea class="gmail-reply-textarea" id="gmail-reply-${escapeHtml(email.id)}">${escapeHtml(draft.reply)}</textarea>
+              <label class="gmail-quality-label"><input type="checkbox" data-quality="${escapeHtml(email.id)}" style="width:auto;accent-color:var(--mint)"> I reviewed this reply and its sources</label>
+              <div class="gmail-rag-actions">
+                <div class="actions" style="gap:8px">
+                  <button class="button primary" type="button" data-send-reply="${escapeHtml(email.id)}" style="font-size:12px;min-height:32px">Send reviewed reply</button>
+                  <button class="button ghost" type="button" data-reject-reply="${escapeHtml(email.id)}" style="font-size:12px;min-height:32px">Reject draft</button>
+                </div>
+                <span class="gmail-streak-banner">${escapeHtml(draft.nextAction || "")}</span>
+              </div>
+              <div class="subtle" style="font-size:11px;margin-top:4px">${escapeHtml(catLabel)} · ${escapeHtml(draft.risk || "unknown")} risk · ${escapeHtml(draft.status || "")}</div>
+            </div>`
+          : draft
+            ? `<div class="notice ${draft.status === "draft_ready" ? "success" : "warning"}">${escapeHtml(catLabel)} · ${escapeHtml(draft.status || "")}</div>`
+            : ""
+    }
+  </div>
+</div>`;
+        }).join("");
+        /* Attach row toggle */
+        document.querySelectorAll(".gmail-row-summary").forEach((row) => {
+          row.addEventListener("click", (e) => {
+            if (e.target.closest("input, .gmail-star-icon")) return;
+            row.closest(".gmail-message-row").classList.toggle("open");
+          });
+        });
+        /* Attach star toggle */
+        document.querySelectorAll("[data-star]").forEach((star) => {
+          star.addEventListener("click", () => {
+            star.classList.toggle("starred");
+            star.textContent = star.classList.contains("starred") ? "★" : "☆";
+          });
+        });
+        /* Attach send/reject */
+        document.querySelectorAll("[data-send-reply]").forEach((button) => button.addEventListener("click", async () => {
+          const messageId = button.dataset.sendReply;
+          const checkbox = document.querySelector(`[data-quality="${CSS.escape(messageId)}"]`);
+          if (!checkbox?.checked) {
+            statusEl.textContent = "⚠ Review the draft and confirm the quality check before sending.";
+            return;
+          }
+          button.disabled = true;
+          try {
+            const email = msgs.find((item) => item.id === messageId);
+            const result = await requestGmail("/gmail/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                messageId,
+                category: email.draft.category,
+                generatedText: email.draft.reply,
+                finalText: document.querySelector(`#gmail-reply-${CSS.escape(messageId)}`).value,
+                qualityPassed: true,
+              }),
+            });
+            statusEl.textContent = `✓ Reply sent. ${result.consecutiveUnedited} consecutive unchanged approvals for this category.${result.eligible ? " Eligible for auto-send." : ""}`;
+            await loadGmailInbox();
+          } catch (error) {
+            statusEl.textContent = `✗ Could not send reply: ${error.message}`;
+            button.disabled = false;
+          }
+        }));
+        document.querySelectorAll("[data-reject-reply]").forEach((button) => button.addEventListener("click", async () => {
+          const messageId = button.dataset.rejectReply;
+          const email = msgs.find((item) => item.id === messageId);
+          button.disabled = true;
+          try {
+            await requestGmail("/feedback", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                category: email.draft.category,
+                generatedText: email.draft.reply || "",
+                finalText: "",
+                decision: "rejected",
+                qualityPassed: false,
+              }),
+            });
+            statusEl.textContent = "Draft rejected and recorded as category feedback.";
+            await loadGmailInbox();
+          } catch (error) {
+            statusEl.textContent = `✗ Could not record rejection: ${error.message}`;
+            button.disabled = false;
+          }
+        }));
+        await loadLearningInsights();
+      } catch (error) {
+        statusEl.textContent = `Error: ${error.message}`;
+        document.querySelector("#gmail-message-list").innerHTML = `<div class="empty" style="padding:40px 24px">${escapeHtml(error.message)}</div>`;
+      }
+    }
+    function showGmailSetupInstructions() {
+      const statusNotice = document.querySelector("#gmail-connection-status");
+      statusNotice.className = "notice warning";
+      statusNotice.textContent = "Gmail authorization is not configured.";
+    }
+    document.querySelector("#connect-gmail").addEventListener("click", async () => {
+      const button = document.querySelector("#connect-gmail");
+      button.disabled = true;
+      try {
+        const status = await requestGmail("/gmail/status");
+        if (!status.configured) {
+          showGmailSetupInstructions();
+          return;
+        }
+        const { url } = await requestGmail("/gmail/auth-url", { method: "POST" });
+        window.location.assign(url);
+      } catch (error) {
+        document.querySelector("#gmail-connection-status").className = "notice danger";
+        document.querySelector("#gmail-connection-status").textContent = `Could not start Gmail authorization: ${error.message}`;
+      } finally {
+        button.disabled = false;
+      }
+    });
+    const connectDemoBtn = document.querySelector("#connect-demo-gmail");
+    if (connectDemoBtn) {
+      connectDemoBtn.addEventListener("click", async () => {
+        connectDemoBtn.disabled = true;
+        try {
+          await requestGmail("/gmail/demo/connect", { method: "POST" });
+          document.querySelector("#gmail-connection-status").className = "notice success";
+          document.querySelector("#gmail-connection-status").textContent = "Connected to demo Gmail account (user.demo@gmail.com).";
+          await loadGmailInbox();
+        } catch (error) {
+          document.querySelector("#gmail-connection-status").className = "notice danger";
+          document.querySelector("#gmail-connection-status").textContent = `Could not connect demo Gmail: ${error.message}`;
+        } finally {
+          connectDemoBtn.disabled = false;
+        }
+      });
+    }
+    /* Category filter removed — label sidebar now handles filtering */
+    async function loadLearningInsights() {
+      const container = document.querySelector("#learning-insights-list");
+      if (!container) return;
+      try {
+        const data = await requestGmail("/gmail/learning-history");
+        if (!data.insights || !data.insights.length) {
+          container.innerHTML = '<div class="empty">No edit insights recorded yet. Edit a generated draft and send it to train the AI.</div>';
+          return;
+        }
+        container.innerHTML = data.insights.slice(-10).reverse().map((item) => `
+          <div class="source" style="padding:8px 0">
+            <strong>${escapeHtml(gmailCategoryLabels[item.category] || item.category)}</strong> · <small>${new Date(item.recordedAt).toLocaleString()}</small>
+            <div style="margin-top:4px;color:var(--mint);font-size:12px">${escapeHtml(item.diffSummary)}</div>
+          </div>
+        `).join("");
+      } catch {
+        container.innerHTML = '<div class="empty">Sign in and connect Gmail to view learning insights.</div>';
+      }
+    }
+    const refreshLearningBtn = document.querySelector("#refresh-learning");
+    if (refreshLearningBtn) refreshLearningBtn.addEventListener("click", loadLearningInsights);
+    /* Label sidebar filter clicks */
+    document.querySelectorAll(".gmail-label-item[data-label-cat]").forEach((label) => {
+      label.addEventListener("click", () => {
+        const cat = label.dataset.labelCat;
+        const isActive = label.classList.contains("active");
+        document.querySelectorAll(".gmail-label-item").forEach((el) => el.classList.remove("active"));
+        if (isActive) {
+          selectedGmailQuery = "";
+          loadGmailInbox("INBOX", "");
+        } else {
+          label.classList.add("active");
+          selectedGmailQuery = `category:${cat}`;
+          loadGmailInbox("INBOX", "");
+        }
+      });
+    });
+    /* Select-all checkbox */
+    document.querySelector("#gmail-select-all").addEventListener("change", (e) => {
+      const checked = e.target.checked;
+      document.querySelectorAll(".gmail-row-check").forEach((cb) => { cb.checked = checked; });
+    });
+    /* Inbox settings button in toolbar */
+    const inboxSettingsToolbarBtn = document.querySelector("#inbox-settings-btn");
+    if (inboxSettingsToolbarBtn) {
+      inboxSettingsToolbarBtn.addEventListener("click", openInboxSettings);
+    }
+    document.querySelector("#refresh-gmail").addEventListener("click", () => loadGmailInbox());
+    const searchGmail = () => loadGmailInbox(selectedGmailFolder, document.querySelector("#gmail-search").value);
+    document.querySelector("#gmail-search-button").addEventListener("click", searchGmail);
+    document.querySelector("#gmail-search").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        searchGmail();
+      }
+    });
+    document.querySelector("#compose-gmail").addEventListener("click", () => {
+      if (!document.querySelector("#compose-gmail").disabled) {
+        document.querySelector("#gmail-compose-feedback").innerHTML = "";
+        document.querySelector("#gmail-compose-dialog").showModal();
+        document.querySelector("#gmail-compose-to").focus();
+      }
+    });
+    document.querySelector("#gmail-compose-close").addEventListener("click", () => {
+      document.querySelector("#gmail-compose-dialog").close();
+    });
+    document.querySelector("#gmail-compose-cancel").addEventListener("click", () => {
+      document.querySelector("#gmail-compose-form").reset();
+      document.querySelector("#gmail-compose-dialog").close();
+    });
+    document.querySelector("#gmail-compose-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const submit = form.querySelector("button[type='submit']");
+      submit.disabled = true;
+      submit.textContent = "Sending...";
+      document.querySelector("#gmail-compose-feedback").innerHTML = "";
+      try {
+        await requestGmail("/gmail/compose", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: document.querySelector("#gmail-compose-to").value.trim(),
+            subject: document.querySelector("#gmail-compose-subject").value,
+            body: document.querySelector("#gmail-compose-body").value,
+          }),
+        });
+        form.reset();
+        document.querySelector("#gmail-compose-dialog").close();
+        const connStatus = document.querySelector("#gmail-connection-status");
+        if (connStatus) {
+          connStatus.className = "gmail-status-text";
+          connStatus.textContent = "✓ Message sent successfully.";
+        }
+        await loadGmailInbox("SENT");
+      } catch (error) {
+        document.querySelector("#gmail-compose-feedback").innerHTML = message(`Could not send message: ${error.message}`, "danger");
+      } finally {
+        submit.disabled = false;
+        submit.textContent = "Send";
+      }
+    });
+    document.querySelectorAll("[data-gmail-folder]").forEach((button) => {
+      button.addEventListener("click", () => loadGmailInbox(button.dataset.gmailFolder));
+    });
+    document.querySelector("#disconnect-gmail").addEventListener("click", async () => {
+      const button = document.querySelector("#disconnect-gmail");
+      button.disabled = true;
+      try {
+        await requestGmail("/gmail/disconnect", { method: "POST" });
+        document.querySelector("#gmail-account-email").textContent = "Not connected";
+        document.querySelector("#gmail-message-count").textContent = "0";
+        document.querySelector("#gmail-last-sync").textContent = "Never";
+        await loadGmailInbox();
+      } catch (error) {
+        document.querySelector("#gmail-connection-status").className = "notice danger";
+        document.querySelector("#gmail-connection-status").textContent = `Could not disconnect Gmail: ${error.message}`;
+      } finally {
+        button.disabled = false;
+      }
+    });
+    async function openInboxSettings() {
+      const feedback = document.querySelector("#gmail-settings-feedback");
+      feedback.innerHTML = "";
+      try {
+        const data = await requestGmail("/gmail/settings");
+        document.querySelector("#gmail-approval-threshold").value = String(data.settings.approvalThreshold);
+        const statuses = new Map(data.categories.map((item) => [item.category, item]));
+        document.querySelector("#gmail-category-list").innerHTML = data.availableCategories.map((category) => {
+          const status = statuses.get(category);
+          const autoAllowed = ["how_to", "troubleshooting", "follow_up", "filters", "home_page", "domain_management", "header", "main_menu", "footer", "general_settings", "design_settings", "managers"].includes(category);
+          return `<div class="gmail-category-row"><label><input type="checkbox" data-active-category="${category}" ${status.enabled ? "checked" : ""} style="width:auto"> ${escapeHtml(gmailCategoryLabels[category] || category)}</label><span>${status.confidenceScore}% · ${status.consecutiveUnedited}/${status.approvalThreshold} approvals${status.eligible ? " · eligible" : ""}</span><label><input type="checkbox" data-auto-category="${category}" ${status.enabled && status.autoSendEnabled ? "checked" : ""} ${autoAllowed && status.enabled ? "" : "disabled"} style="width:auto"> Auto-send</label></div>`;
+        }).join("");
+        document.querySelector("#gmail-settings-dialog").showModal();
+      } catch (error) {
+        feedback.innerHTML = message(`Could not load Inbox settings: ${error.message}`, "danger");
+      }
+    }
+    document.querySelector("#inbox-settings").addEventListener("click", openInboxSettings);
+    document.querySelector("#gmail-settings-cancel").addEventListener("click", () => {
+      document.querySelector("#gmail-settings-dialog").close();
+    });
+    document.querySelector("#gmail-settings-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submit = event.currentTarget.querySelector("button[type='submit']");
+      submit.disabled = true;
+      try {
+        const categories = [...document.querySelectorAll("[data-active-category]:checked")].map((input) => input.dataset.activeCategory);
+        const autoSendCategories = [...document.querySelectorAll("[data-auto-category]:checked")].map((input) => input.dataset.autoCategory);
+        const result = await requestGmail("/gmail/settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            categories,
+            autoSendCategories,
+            approvalThreshold: Number(document.querySelector("#gmail-approval-threshold").value),
+          }),
+        });
+        document.querySelector("#gmail-settings-feedback").innerHTML = message(
+          `Saved. Auto-send is enabled for ${result.settings.autoSendCategories.length} low-risk categories.`,
+          "success",
+        );
+        await loadGmailInbox();
+      } catch (error) {
+        document.querySelector("#gmail-settings-feedback").innerHTML = message(`Could not save settings: ${error.message}`, "danger");
+      } finally {
+        submit.disabled = false;
+      }
+    });
+    document.querySelector("#auth-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = document.querySelector("#auth-submit");
+      button.disabled = true;
+      document.querySelector("#auth-feedback").innerHTML = "";
+      try {
+        const user = await request(`${API.knowledge}/auth/${authMode}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: document.querySelector("#auth-email").value.trim(),
+            password: document.querySelector("#auth-password").value
+          })
+        });
+        if (user.token) {
+          localStorage.setItem("knowledge_token", user.token);
+          sessionStorage.setItem("knowledge_token", user.token);
+          localStorage.setItem("knowledge_email", user.email);
+        }
+        showAuthenticated(user);
+        try { await loadSitemaps(); } catch (e) { console.warn("Sitemaps load error:", e); }
+        try { await refreshIngestion(); } catch (e) { console.warn("Ingestion load error:", e); }
+        try { await loadGmailInbox(); } catch (e) { console.warn("Gmail load error:", e); }
+      } catch (error) {
+        const feedback = document.querySelector("#auth-feedback");
+        if (authMode === "login" && error.message === "Email or password is incorrect") {
+          feedback.innerHTML = `${message(error.message, "danger")}<p class="subtle">Default password for this local account is <code>Password123456</code>, or click <strong>Forgot password?</strong> to reset it instantly.</p>`;
+        } else if (authMode === "register" && error.message === "An account with this email already exists") {
+          feedback.innerHTML = `${message(error.message, "warning")}<button class="auth-link" id="auth-error-sign-in" type="button">Sign in to this account</button>`;
+          feedback.querySelector("#auth-error-sign-in").addEventListener("click", () => {
+            document.querySelector("#auth-switch").click();
+          });
+        } else {
+          feedback.innerHTML = message(error.message, "danger");
+        }
+      } finally {
+        button.disabled = false;
+      }
+    });
+    document.querySelector("#sign-out").addEventListener("click", async () => {
+      localStorage.removeItem("knowledge_token");
+      sessionStorage.removeItem("knowledge_token");
+      localStorage.removeItem("knowledge_email");
+      _cachedInboxToken = null;
+      try {
+        await request(`${API.knowledge}/auth/logout`, { method: "POST" });
+      } catch (error) {
+        console.warn(error);
+      }
+      document.body.classList.remove("authenticated");
+      document.querySelector("#auth-password").value = "";
+    });
+    async function initializeAuth() {
+      const storedToken = localStorage.getItem("knowledge_token") || sessionStorage.getItem("knowledge_token");
+      if (storedToken) {
+        try {
+          const user = await request(`${API.knowledge}/auth/me`);
+          localStorage.setItem("knowledge_token", storedToken);
+          sessionStorage.setItem("knowledge_token", storedToken);
+          if (user.email) localStorage.setItem("knowledge_email", user.email);
+          showAuthenticated(user);
+          try { await loadSitemaps(); } catch (e) { console.warn(e); }
+          try { await refreshIngestion(); } catch (e) { console.warn(e); }
+          try { await loadGmailInbox(); } catch (e) { console.warn(e); }
+          if (gmailConnectedCallback) {
+            const inboxBtn = document.querySelector('[data-view="inbox"]');
+            if (inboxBtn) inboxBtn.click();
+          }
+          return;
+        } catch (e) {
+          if (e.message && e.message.includes("Sign in")) {
+            localStorage.removeItem("knowledge_token");
+            sessionStorage.removeItem("knowledge_token");
+          } else {
+            const savedEmail = localStorage.getItem("knowledge_email") || "User";
+            showAuthenticated({ email: savedEmail });
+            return;
+          }
+        }
+      }
+      document.body.classList.remove("authenticated");
+      document.querySelector("#auth-submit").disabled = false;
+    }
+    initializeAuth();
+
+    document.querySelector("#sync-schedule").addEventListener("change", async (event) => {
+      const select = event.currentTarget;
+      select.disabled = true;
+      document.querySelector("#schedule-feedback").innerHTML = "";
+      try {
+        const result = await request(`${API.knowledge}/sitemaps/schedule`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ schedule: select.value })
+        });
+        sitemapSchedule = result.schedule;
+        renderSitemaps();
+        document.querySelector("#schedule-feedback").innerHTML = message(
+          result.schedule === "manual"
+            ? "Automatic sitemap rechecks are disabled."
+            : `Sitemap rechecks are scheduled ${result.schedule}. The scheduler checks due sources at least once per minute.`,
+          "success"
+        );
+      } catch (error) {
+        document.querySelector("#schedule-feedback").innerHTML = message(`Could not save sitemap schedule: ${error.message}`, "danger");
+        try {
+          await loadSitemaps();
+        } catch {
+          select.value = sitemapSchedule;
+        }
+      } finally {
+        select.disabled = false;
+      }
+    });
+    document.querySelector("#missing-retention").addEventListener("change", async (event) => {
+      const select = event.currentTarget;
+      select.disabled = true;
+      document.querySelector("#schedule-feedback").innerHTML = "";
+      try {
+        const result = await request(`${API.knowledge}/sitemaps/retention`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ checks: Number(select.value) })
+        });
+        sitemapRetentionChecks = result.retention_checks;
+        document.querySelector("#schedule-feedback").innerHTML = message(
+          `Missing pages will be archived after ${sitemapRetentionChecks === 1 ? "one successful check" : `${sitemapRetentionChecks} consecutive successful checks`}.`,
+          "success"
+        );
+      } catch (error) {
+        document.querySelector("#schedule-feedback").innerHTML = message(`Could not save retention rule: ${error.message}`, "danger");
+        select.value = String(sitemapRetentionChecks);
+      } finally {
+        select.disabled = false;
+      }
+    });
+
+    function updateIngestionDashboard(data) {
+      const processed = Number(data.processed_pages ?? data.total);
+      const active = Number(data.active_pages ?? data.active);
+      document.querySelector("#stat-processed").textContent = formatCount(processed);
+      document.querySelector("#stat-embedded").textContent = formatCount(Number(data.embedded_pages ?? data.embedding_count) || 0);
+      document.querySelector("#stat-failed").textContent = formatCount(Number(data.failed_pages ?? data.failed) || 0);
+      document.querySelector("#stat-pending").textContent = formatCount(Number(data.pending_pages) || 0);
+      document.querySelector("#stat-duplicates").textContent = formatCount(Number(data.duplicate_urls_skipped) || 0);
+      document.querySelector("#stat-archived").textContent = formatCount(Number(data.archived_pages) || 0);
+      const r301 = document.querySelector("#stat-redirects-301");
+      if (r301) r301.textContent = formatCount(Number(data.pages_301 ?? data.redirects_301) || 0);
+      const e404 = document.querySelector("#stat-errors-404");
+      if (e404) e404.textContent = formatCount(Number(data.pages_404) || 0);
+      const act = document.querySelector("#stat-active");
+      if (act) act.textContent = formatCount(Number.isFinite(active) ? active : 0);
+      document.querySelector("#stat-sync").textContent = data.last_sync_at
+        ? new Date(data.last_sync_at).toLocaleString()
+        : "Never";
+      if (data.progress?.active) {
+        document.querySelector("#stat-progress").textContent = `${data.progress.completed} / ${data.progress.total || "?"} pages`;
+      } else if (Number.isFinite(active)) {
+        document.querySelector("#stat-progress").textContent = `${active} active`;
+      }
+    }
 
     navButtons.forEach((button) => button.addEventListener("click", () => {
       const name = button.dataset.view;
@@ -252,18 +1552,37 @@
       document.querySelectorAll(".view").forEach((view) => view.classList.toggle("active", view.id === `view-${name}`));
       document.querySelector("#crumb-name").textContent = { knowledge: "Knowledge Brain", inbox: "Inbox review", scope: "Meeting to scope" }[name];
       if (name === "scope") loadHistory();
+      if (name === "inbox") loadGmailInbox();
     }));
 
     document.querySelector("#knowledge-form").addEventListener("submit", async (event) => {
       event.preventDefault();
       const question = document.querySelector("#question").value.trim();
+      if (!question) return;
       show("#knowledge-result", '<div class="result-box empty">Searching indexed evidence...</div>');
       try {
-        const data = await request(`${API.knowledge}/ask?q=${encodeURIComponent(question)}`);
+        const data = await request(`${API.knowledge}/ask/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question, conversation_history: conversationHistory.slice(-10) })
+        });
         const tone = data.status === "answered" ? "success" : "warning";
         const sources = data.sources.length ? data.sources.map((source) => `<div class="source"><strong>${escapeHtml(source.title)}</strong><br><a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.url)}</a><small>Relevance ${escapeHtml(source.relevance)} · ${source.images?.length || 0} image reference(s)</small></div>`).join("") : '<p class="empty">No source articles were retrieved.</p>';
-        show("#knowledge-result", `${message(data.status === "answered" ? "Evidence found" : `Human review requested${data.escalation_id ? ` · escalation ${data.escalation_id}` : ""}`, tone)}<div class="result-box">${escapeHtml(data.answer)}</div><div class="section"><div class="section-head"><h2>Source articles</h2><span class="badge">${data.sources.length}</span></div>${sources}</div>`);
+        conversationHistory = [
+          ...conversationHistory,
+          { role: "user", content: question },
+          { role: "assistant", content: data.answer }
+        ].slice(-10);
+        sessionStorage.setItem(conversationStorageKey, JSON.stringify(conversationHistory));
+        const transcript = conversationHistory.map((turn) => `<div class="section"><strong>${turn.role === "user" ? "You" : "Assistant"}</strong><div class="result-box">${escapeHtml(turn.content)}</div></div>`).join("");
+        show("#knowledge-result", `${transcript}${message(data.status === "answered" ? "Evidence found" : `Human review requested${data.escalation_id ? ` · escalation ${data.escalation_id}` : ""}`, tone)}<div class="section"><div class="section-head"><h2>Source articles</h2><span class="badge">${data.sources.length}</span></div>${sources}</div>`);
+        document.querySelector("#question").value = "";
       } catch (error) { show("#knowledge-result", message(`Knowledge service unavailable: ${error.message}`, "danger")); }
+    });
+    document.querySelector("#new-conversation").addEventListener("click", () => {
+      conversationHistory = [];
+      sessionStorage.removeItem(conversationStorageKey);
+      show("#knowledge-result", '<div class="result-box empty">Start a new conversation. Retrieved article context will be included automatically.</div>');
     });
     document.querySelector("#unanswerable-example").addEventListener("click", () => {
       document.querySelector("#question").value = "Can you give me another customer's private account password?";
@@ -271,19 +1590,158 @@
     });
     document.querySelector("#run-ingestion").addEventListener("click", async (event) => {
       const button = event.currentTarget;
+      let before;
+      let preview;
       button.disabled = true;
-      show("#ingestion-result", '<div class="result-box empty">Crawling the selected batch. Network time depends on the source.</div>');
       try {
-        const data = await request(`${API.knowledge}/ingestion/run`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ limit: Number(document.querySelector("#ingestion-limit").value) }) });
-        show("#ingestion-result", `<div class="result-box">Discovered: ${data.discovered}\nProcessed: ${data.processed}\nAdded or updated: ${data.added_or_updated}\nUnchanged: ${data.unchanged}\nFailed: ${data.failed}\nRemoved: ${data.removed}</div>`);
-      } catch (error) { show("#ingestion-result", message(`Ingestion failed: ${error.message}`, "danger")); }
-      finally { button.disabled = false; }
+        [before, preview] = await Promise.all([
+          request(`${API.knowledge}/ingestion/status`),
+          request(`${API.knowledge}/ingestion/preview`)
+        ]);
+      } catch (error) {
+        show("#ingestion-result", message(`Cannot preview sitemaps before ingestion: ${error.message}`, "danger"));
+        button.disabled = false;
+        return;
+      }
+      const sitemapDetails = preview.sitemaps
+        .map((sitemap) => `${sitemap.url}\n  URLs: ${sitemap.urls_found}\n  Duplicate URLs skipped: ${sitemap.duplicate_urls_skipped || 0}\n  First: ${sitemap.first_url || "none"}\n  Last: ${sitemap.last_url || "none"}`);
+      const duplicateDetails = (preview.duplicate_urls || [])
+      .map((duplicate) => `${duplicate.url}\n  Found ${duplicate.occurrences} times in:\n${duplicate.sitemap_references.map((reference) => `    ${reference}`).join("\n")}`);
+      const summary = [
+        `Connected sitemap sources: ${preview.connected_sitemaps}.`,
+        `Total sitemaps found (including nested): ${preview.total_sitemaps_found}.`,
+        `Total unique URLs found: ${preview.total_urls_found}.`,
+        `First URL: ${preview.first_url || "none"}.`,
+        `Last URL: ${preview.last_url || "none"}.`,
+        `Duplicate URLs skipped: ${preview.duplicate_urls_skipped || 0}.`,
+        "",
+        "Estimated Processing Time & Throughput:",
+        `• Pages per 1 hour: ${preview.pages_per_1_hour ?? preview.pages_per_hour ?? 3600}`,
+        `• Pages per hour: ${preview.pages_per_hour ?? 3600}`,
+        `• Pages per day: ${preview.pages_per_day ?? 86400}`,
+        `• Expected completion: ${preview.expected_completion_time ?? "A few seconds"}`,
+        "",
+        duplicateDetails.length ? `Duplicate URL references:\n${duplicateDetails.join("\n")}` : "No duplicate URLs found across the connected sitemap sources.",
+        sitemapDetails.length ? `Sitemap-level details:\n${sitemapDetails.join("\n")}` : "No sitemaps found.",
+        `Indexed pages: ${before.total ?? "unknown"}; active: ${before.active ?? "unknown"}; failed: ${before.failed ?? "unknown"}.`,
+        "The run will process every URL found in the connected sitemaps."
+      ].join("\n");
+      document.querySelector("#ingestion-confirmation-summary").innerHTML = summary.replace(/\n/g, '<br/>');
+      const confirmationDialog = document.querySelector("#ingestion-confirmation");
+      confirmationDialog.showModal();
+      const confirmed = await new Promise((resolve) => {
+        confirmationDialog.addEventListener("close", () => resolve(confirmationDialog.returnValue === "confirm"), { once: true });
+      });
+      if (!confirmed) {
+        button.disabled = false;
+        return;
+      }
+      const progress = document.querySelector("#ingestion-progress");
+      const progressBar = progress.parentElement;
+      const startedAt = Date.now();
+      progressBar.setAttribute("aria-valuenow", "0");
+      document.querySelector("#stat-progress").textContent = "Discovering sitemap URLs";
+      document.querySelector("#ingestion-eta").textContent = "Discovering pages before the crawl begins; progress and ETA will update as pages finish.";
+      show("#ingestion-result", '<div class="result-box empty">Discovering sitemap pages...</div>');
+      let progressRequestPending = false;
+      const progressTimer = window.setInterval(async () => {
+        if (progressRequestPending) return;
+        progressRequestPending = true;
+        try {
+          const status = await request(`${API.knowledge}/ingestion/status`);
+          updateIngestionDashboard(status);
+          const current = status.progress;
+          const percent = Number(current?.percent) || 0;
+          progress.style.width = `${percent}%`;
+          progressBar.setAttribute("aria-valuenow", String(percent));
+          document.querySelector("#ingestion-eta").textContent = current?.total
+            ? `${current.completed} of ${current.total} pages processed · ${current.estimated_seconds_remaining === null ? "calculating ETA" : `about ${current.estimated_seconds_remaining} seconds remaining`}.`
+            : "Discovering sitemap pages; the ETA will appear when the page count is known.";
+        } catch (error) {
+          document.querySelector("#ingestion-eta").textContent = `Progress update unavailable: ${error.message}`;
+        } finally {
+          progressRequestPending = false;
+        }
+      }, 1000);
+      try {
+        const data = await request(`${API.knowledge}/ingestion/run`, { method: "POST" });
+        const durationSeconds = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
+        progress.style.width = "100%";
+        progressBar.setAttribute("aria-valuenow", "100");
+        document.querySelector("#stat-progress").textContent = data.complete ? "Complete" : "Incomplete";
+        document.querySelector("#ingestion-eta").textContent = `Run finished in ${durationSeconds} seconds.`;
+        show("#ingestion-result", `<div class="result-box">Sitemap URLs discovered: ${escapeHtml(formatCount(Number(data.discovered)))}\nDuplicate URLs skipped: ${escapeHtml(formatCount(Number(data.duplicate_urls_skipped)))}\nProcessed: ${escapeHtml(formatCount(Number(data.processed)))}\nAdded or updated: ${escapeHtml(formatCount(Number(data.added_or_updated)))}\nUnchanged: ${escapeHtml(formatCount(Number(data.unchanged)))}\nFailed: ${escapeHtml(formatCount(Number(data.failed)))}\nArchived after retention checks: ${escapeHtml(formatCount(Number(data.archived)))}\nAll discovered URLs processed: ${data.complete ? "Yes" : "No — some URLs failed or were disallowed."}</div>`);
+        await refreshIngestion();
+      } catch (error) {
+        document.querySelector("#stat-progress").textContent = "Failed";
+        show("#ingestion-result", message(`Ingestion failed: ${error.message}`, "danger"));
+      } finally {
+        window.clearInterval(progressTimer);
+        button.disabled = false;
+      }
     });
     async function refreshIngestion() {
-      try { const data = await request(`${API.knowledge}/ingestion/status`); show("#ingestion-result", `<div class="result-box">${escapeHtml(JSON.stringify(data, null, 2))}</div>`); }
+      try {
+        const data = await request(`${API.knowledge}/ingestion/status`);
+        updateIngestionDashboard(data);
+        show("#ingestion-result", `<div class="result-box">Total processed pages: ${escapeHtml(formatCount(Number(data.processed_pages ?? data.total)))}\nSuccessfully embedded pages: ${escapeHtml(formatCount(Number(data.embedded_pages) || 0))}\nFailed pages: ${escapeHtml(formatCount(Number(data.failed_pages) || 0))}\nPending pages: ${escapeHtml(formatCount(Number(data.pending_pages) || 0))}\nDuplicate URLs skipped: ${escapeHtml(formatCount(Number(data.duplicate_urls_skipped) || 0))}\nArchived pages: ${escapeHtml(formatCount(Number(data.archived_pages) || 0))}\nLast synchronization: ${data.last_sync_at ? escapeHtml(new Date(data.last_sync_at).toLocaleString()) : "Never"}.</div>`);
+        await Promise.all([loadArchivedArticles(), loadArticleChangeHistory()]);
+      }
       catch (error) { show("#ingestion-result", message(`Status unavailable: ${error.message}`, "danger")); }
     }
     document.querySelector("#refresh-ingestion").addEventListener("click", refreshIngestion);
+
+    async function loadArticleChangeHistory() {
+      const container = document.querySelector("#article-change-list");
+      try {
+        const data = await request(`${API.knowledge}/ingestion/history?limit=25`);
+        container.innerHTML = data.changes.length
+          ? data.changes.map((change) => {
+            const oldContent = JSON.parse(change.old_content);
+            const newContent = JSON.parse(change.new_content);
+            const oldText = [oldContent.title, ...(oldContent.sections || []).map((section) => section.text)].filter(Boolean).join("\n\n");
+            const newText = [newContent.title, ...(newContent.sections || []).map((section) => section.text)].filter(Boolean).join("\n\n");
+            return `<details class="history-item"><summary><strong>${escapeHtml(newContent.title || change.url)}</strong><br>${escapeHtml(change.url)}<br>Changed ${escapeHtml(new Date(change.changed_at).toLocaleString())}</summary><div class="section"><h3>Previous content</h3><div class="result-box">${escapeHtml(oldText)}</div><h3>Updated content</h3><div class="result-box">${escapeHtml(newText)}</div></div></details>`;
+          }).join("")
+          : '<div class="empty">No content changes have been recorded yet.</div>';
+      } catch (error) {
+        container.innerHTML = `<div class="empty">Change history unavailable: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+    document.querySelector("#refresh-change-history").addEventListener("click", loadArticleChangeHistory);
+
+    async function loadArchivedArticles() {
+      const data = await request(`${API.knowledge}/ingestion/archived`);
+      const container = document.querySelector("#archive-list");
+      container.innerHTML = data.articles.length
+        ? data.articles.map((article) => `<div class="history-item"><span><strong>${escapeHtml(article.title)}</strong><br>${escapeHtml(article.url)}<br>Archived ${article.archived_at ? escapeHtml(new Date(article.archived_at).toLocaleString()) : "date unavailable"}</span><button class="button ghost" type="button" data-restore-url="${escapeHtml(article.url)}">Restore</button></div>`).join("")
+        : '<div class="empty">No archived pages.</div>';
+      container.querySelectorAll("[data-restore-url]").forEach((button) => button.addEventListener("click", async () => {
+        button.disabled = true;
+        try {
+          await request(`${API.knowledge}/ingestion/archived/restore`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: button.dataset.restoreUrl })
+          });
+          await Promise.all([refreshIngestion(), loadArchivedArticles()]);
+        } catch (error) {
+          button.disabled = false;
+          document.querySelector("#archive-list").insertAdjacentHTML("afterbegin", message(`Could not restore page: ${error.message}`, "danger"));
+        }
+      }));
+    }
+    document.querySelector("#refresh-archive").addEventListener("click", async (event) => {
+      const button = event.currentTarget;
+      button.disabled = true;
+      try {
+        await loadArchivedArticles();
+      } catch (error) {
+        document.querySelector("#archive-list").innerHTML = message(`Could not load archived pages: ${error.message}`, "danger");
+      } finally {
+        button.disabled = false;
+      }
+    });
 
     document.querySelector("#sample-email").addEventListener("click", () => {
       document.querySelector("#email-subject").value = "Refund request for annual plan";
@@ -293,21 +1751,12 @@
       event.preventDefault();
       show("#inbox-result", '<div class="result-box empty">Classifying email and checking product evidence...</div>');
       try {
-        const data = await request(`${API.inbox}/draft`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ subject: document.querySelector("#email-subject").value, body: document.querySelector("#email-body").value }) });
+        const data = await requestGmail("/draft", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ subject: document.querySelector("#email-subject").value, body: document.querySelector("#email-body").value }) });
         const tone = data.status === "draft_ready" ? "success" : "warning";
-        const draft = data.reply ? `<div class="field"><label for="draft-text">Suggested reply</label><textarea id="draft-text">${escapeHtml(data.reply)}</textarea></div><div class="field"><label><input id="quality-passed" type="checkbox" style="width:auto"> Reviewer confirms quality and source checks passed</label></div><div class="actions"><button class="button primary" id="record-send" type="button">Simulate reviewed send</button><button class="button" id="record-reject" type="button">Reject draft</button></div>` : message("No reply text was generated because evidence is missing or the knowledge service is unavailable.", "warning");
+        const draft = data.reply
+          ? `<div class="field"><label>Suggested reply</label><div class="result-box">${escapeHtml(data.reply)}</div></div>`
+          : message("No reply text was generated because evidence is missing or the knowledge service is unavailable.", "warning");
         show("#inbox-result", `${message(`${data.category} · ${data.risk} risk · ${data.status}`, tone)}<p class="subtle">${escapeHtml(data.nextAction)}</p>${draft}<div class="section"><h3>Evidence</h3>${data.sources.length ? data.sources.map((source) => `<div class="source"><a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.title || source.url)}</a></div>`).join("") : '<p class="empty">No verified sources attached.</p>'}</div>`);
-        if (data.reply) {
-          const saveOutcome = async (decision) => {
-            try {
-              const finalText = decision === "sent" ? document.querySelector("#draft-text").value : "";
-              const status = await request(`${API.inbox}/feedback`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ category: data.category, generatedText: data.reply, finalText, decision, qualityPassed: decision === "sent" && document.querySelector("#quality-passed").checked }) });
-              show("#inbox-result", message(`${decision === "sent" ? "Simulated send recorded" : "Rejection recorded"}. Unchanged quality-passed consecutive sends: ${status.consecutiveUnedited}. Autonomy eligible: ${status.eligible}.`, status.eligible ? "success" : "warning"));
-            } catch (error) { show("#inbox-result", message(`Could not save review outcome: ${error.message}`, "danger")); }
-          };
-          document.querySelector("#record-send").addEventListener("click", () => saveOutcome("sent"));
-          document.querySelector("#record-reject").addEventListener("click", () => saveOutcome("rejected"));
-        }
       } catch (error) { show("#inbox-result", message(`Inbox Agent unavailable: ${error.message}`, "danger")); }
     });
 
