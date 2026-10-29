@@ -2,7 +2,7 @@ import json
 import os
 from urllib.error import URLError
 from urllib.parse import urlencode
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -36,9 +36,10 @@ class ApprovalRequest(BaseModel):
 
 def query_knowledge(question: str) -> dict:
     base_url = os.getenv("KNOWLEDGE_BRAIN_URL", "http://127.0.0.1:8010").rstrip("/")
-    url = f"{base_url}/ask?{urlencode({'q': question})}"
+    url = f"{base_url}/internal/ask?{urlencode({'q': question})}"
+    request = Request(url, headers={"X-Knowledge-Service-Key": os.getenv("KNOWLEDGE_SERVICE_TOKEN", "")})
     try:
-        with urlopen(url, timeout=3) as response:
+        with urlopen(request, timeout=3) as response:
             return json.loads(response.read().decode("utf-8"))
     except (URLError, TimeoutError, ValueError):
         return {"status": "unavailable", "sources": [], "needs_human": True}
